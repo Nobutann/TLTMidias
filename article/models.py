@@ -24,6 +24,3 @@ class Subcategory(models.Model):
 
     def __str__(self):
         return f"{self.title}({self.category})"
-
-class Comments(models.Model):
-    pass
