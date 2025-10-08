@@ -13,31 +13,38 @@ O objetivo central dessas melhorias é aperfeiçoar a experiência do usuário, 
 
 ## Funcionalidades
 
-Pretendemos atingir esse objetivo por meio das seguintes funções:
+Pretendemos alcançar esse objetivo por meio das seguintes funcionalidades:
 
-     Menu de Categorias Organizadas
+**Menu de Categorias Organizadas**  
 Permite que o usuário acesse categorias e subcategorias organizadas por áreas de interesse (Esportes, Política, Economia, Cultura, Tecnologia) ao clicar na aba de menu da página inicial.
 
-     Modos de Acessibilidade (Daltonismo, Escuro, Dislexia)
+**Modos de Acessibilidade (Daltonismo, Escuro, Dislexia)**  
 Disponibiliza configurações de acessibilidade com diferentes modos de visualização como modo escuro, modo dislexia e paletas específicas para tipos de daltonismo.
 
-     Recomendações de Conteúdo e Anúncios Relacionados
+**Recomendações de Conteúdo e Anúncios Relacionados**  
 Exibe, ao final de cada notícia, recomendações de matérias e anúncios personalizados com base no tema do conteúdo acessado.
 
-     Barra de Pesquisa Fixa
-Mantém a barra de pesquisa sempre visível no topo da tela, permitindo ao usuário realizar buscas rápidas em qualquer parte do site.
-
-     Notificações de Breaking News
+**Notificações de Breaking News**  
 Envia notificações imediatas sobre notícias urgentes (breaking news) aos leitores cadastrados, com possibilidade de personalização por categoria.
 
-     Sistema de Busca
+**Sistema de Busca**  
 Permite buscar notícias por palavra-chave, data ou categoria, exibindo apenas os resultados correspondentes aos filtros aplicados.
 
-     Seção de Comentários
+**Seção de Comentários**  
 Inclui uma área de comentários ao final de cada notícia, permitindo que usuários logados interajam entre si e compartilhem opiniões sobre o conteúdo.
 
-     Compartilhamento em Redes Sociais
+**Compartilhamento em Redes Sociais**  
 Oferece botões para compartilhamento direto das matérias em plataformas como Twitter, Instagram Stories e WhatsApp, com geração automática de links.
+
+**Destaque de Matérias Relevantes na Página Inicial**  
+Exibe as notícias mais importantes no topo da página inicial, facilitando o acesso do usuário aos conteúdos de maior interesse.
+
+**Download de Notícias em PDF**  
+Permite que o usuário baixe matérias em formato PDF, garantindo a leitura offline mesmo sem conexão com a internet.
+
+**Gerenciamento de Artigos pelos Funcionários**  
+Permite que funcionários publiquem, editem e deletem artigos, garantindo que o conteúdo disponível seja sempre atualizado e legível para os leitores.
+
 
 ## Entregas
 
