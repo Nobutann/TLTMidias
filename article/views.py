@@ -23,7 +23,7 @@ def home(request):
             menu_data[category_title]['subcategories'].append(subcategory) 
 
     context = {'menu': menu_data}
-    return render(request, 'home.html', context)
+    return render(request, 'article/index.html', context)
 
 
 def category_articles(request, slug):
@@ -31,7 +31,7 @@ def category_articles(request, slug):
     
     articles = Article.objects.filter(category=category).order_by('-published_date') 
     context = {'title': category.title, 'articles': articles}
-    return render(request, 'list_page.html', context)
+    return render(request, 'article/list_page.html', context)
 
 
 
@@ -40,4 +40,4 @@ def subcategory_articles(request, slug):
     
     articles = Article.objects.filter(subcategory=subcategory).order_by('-published_date')
     context = {'title': subcategory.title, 'articles': articles}
-    return render(request, 'article/home.html', context)
+    return render(request, 'article/index.html', context)
