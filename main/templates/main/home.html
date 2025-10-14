@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jornal do Commercio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --cor-principal-vermelho: #c72228;
+            --cor-texto-principal: #333;
+            --cor-fundo: #f4f4f4;
+            --cor-borda: #ddd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto-principal);
+        }
+
+        .container-app {
+            max-width: 480px; /* Largura comum para visualização mobile */
+            margin: auto;
+            background-color: #fff;
+            border: 1px solid var(--cor-borda);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .logo-jc {
+            width: 80px;
+            height: auto;
+        }
+
+        .live-button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .live-button .red-dot {
+            width: 8px;
+            height: 8px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--cor-principal-vermelho);
+            padding: 12px 10px;
+            color: white;
+            font-weight: bold;
+        }
+        .nav-item {
+            cursor: pointer;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--cor-principal-vermelho);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 10px 0;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .main-content {
+            padding: 15px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .content-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        
+        .content-buttons button {
+            border: 1px solid var(--cor-principal-vermelho);
+            background-color: #fff;
+            color: var(--cor-principal-vermelho);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .content-buttons button.active {
+            background-color: var(--cor-principal-vermelho);
+            color: #fff;
+        }
+        
+        .main-image-placeholder {
+            width: 100%;
+            height: 250px;
+            background-color: #e9e9e9;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #ccc;
+            margin-bottom: 10px;
+        }
+        
+        .image-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .image-actions i {
+            font-size: 1.3rem;
+        }
+        
+        .article-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-left: 4px solid var(--cor-principal-vermelho);
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .article-summary p {
+            line-height: 1.6;
+            font-size: 1rem;
+            color: #666;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container-app">
+        <header class="header-top">
+            <div class="logo">
+                <img src="https://jc.ne10.uol.com.br/images/jc-logo.svg" alt="Logo JCPE" class="logo-jc">
+            </div>
+            <div class="live-button">
+                <i class="fa-solid fa-tower-broadcast"></i>
+                <span>AO VIVO</span>
+                <span class="red-dot"></span>
+            </div>
+            <div class="header-icons">
+                <a href="#" style="color: inherit;"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" style="color: inherit;"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <div class="dropdown">
+                <span class="nav-item">
+                    Categorias <i class="fa-solid fa-chevron-down fa-xs"></i>
+                </span>
+                <div class="dropdown-content">
+                    {% for category in categories %}
+                        <a href="{% url 'category_page' category.slug %}">{{ category.name }}</a>
+                    {% endfor %}
+                    {% if not categories %}
+                        <a href="#">Interesses</a>
+                        <a href="#">Esporte</a>
+                        <a href="#">Saúde</a>
+                        <a href="#">Política</a>
+                        <a href="#">Ciência</a>
+                        <a href="#">Economia</a>
+                        <a href="#">Opinião</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="nav-item">Colunistas</div>
+            <div class="nav-item">Acervo</div>
+        </nav>
+
+        <main class="main-content">
+            <div class="content-header">
+                <h2>Jornal Diário JC</h2>
+                <div class="content-buttons">
+                    <button class="active">Impresso</button>
+                    <button>Digital</button>
+                </div>
+            </div>
+
+            <div class="main-image-placeholder">
+                <i style="font-size: 50px; color: #ccc;" class="fa-regular fa-image"></i>
+            </div>
+            
+            <div class="image-actions">
+                <i class="fa-regular fa-comment"></i>
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <div class="article">
+                <h1 class="article-title">
+                    {{ article.title|default:"TÍTULO MATÉRIA" }}
+                </h1>
+                <div class="article-summary">
+                    <p>{{ article.summary|default:"Este é o espaço para um resumo ou as primeiras linhas da matéria. O texto será preenchido dinamicamente com os dados do seu banco de dados." }}</p>
+                    <p>{{ article.summary2|default:"Continue o resumo aqui para preencher o espaço conforme o protótipo." }}</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
+
