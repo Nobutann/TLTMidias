@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Categories, Article, Subcategory
+from .models import Category, Subcategory, Article
 
-admin.site.register(Categories)
-admin.site.register(Article)
+admin.site.register(Category)
 admin.site.register(Subcategory)
+admin.site.register(Article)
+
