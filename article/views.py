@@ -63,16 +63,45 @@ def article_detail(request, slug):
             'referer': referer
         })
 
-def publish_articles(request):
+def publish_article(request):
     if request.method == 'POST':
         form = ArticleForms(request.POST, request.FILES)
         if form.is_valid():
-            article = form.save(commit=True)
+            article = form.save()
             article.save()
-            return redirect('') #Lucca, aqui tu redireciona pra página que tu quiser no front
+            return redirect('detail') #Lucca, aqui tu redireciona pra página que tu quiser no front
     
     context = {
         'form': form
     }
 
     return render(request, '', context) #Lucca, denovo, aqui tu renderiza a página html que tu for fazer
+
+def edit_article(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    
+    if request.method == 'POST':
+        form = ArticleForms(request.POST, request.FILES, instance=article)
+        if form.is_valid():
+            form.save()
+            return redirect('detail', pk=article.pk) #Denovo, pode redirecionar pra página que achar melhor, coloquei placeholder
+        
+    context = {
+        'form': form,
+        'article': article
+    }
+
+    return render(request, '', context) #Lucca, novamente, aqui tu renderiza o html que tu for fazer pra editar
+
+def delete_article(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+
+    if request.method == 'POST':
+        article.delete()
+        return redirect('list_page')
+    
+    context = {
+        'article': article
+    }
+
+    return render(request, '', context) #Novamente, renderiza pra página html que for criar
