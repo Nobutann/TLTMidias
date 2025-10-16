@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block content %}
+
+    <h1>Matérias em: {{ title }}</h1>
+    
+    {% if articles %}
+        <div class="lista-de-artigos">
+            {% for article in articles %}
+                <div class="artigo-card">
+                    {% if article.slug %}
+                        <h2><a href="{% url 'artigo' article.slug %}">{{ article.title }}</a></h2>
+                    {% else %}
+                        <h2>{{ article.title }}</h2>
+                    {% endif %}
+                    <p>Publicado em: {{ article.published_date|date:"d/m/Y" }}</p>
+                    <p>Autor: {{ article.author }}</p>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhuma matéria encontrada nesta seção.</p>
+    {% endif %}
+
+{% endblock content %}

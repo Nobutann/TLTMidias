@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+<nav id="menu-principal">
+    <h2>Áreas de Interesse</h2>
+    
+    {% for category_title, category_info in menu.items %}
+        
+        <div class="menu-categoria">
+            
+            <h3>
+                <a href="{% url 'categoria' category_info.slug %}">
+                    {{ category_title }}
+                </a>
+            </h3>
+            
+            {% if category_info.subcategories %}
+                <ul class="subcategorias-lista">
+                    {% for subcategory in category_info.subcategories %}
+                        <li>
+                            <a href="{% url 'subcategoria' subcategory.slug %}">
+                                {{ subcategory.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+        </div>
+        <hr> 
+        
+    {% empty %}
+        <p class="erro-conexao">Não foi possível carregar as categorias.</p>
+        <p>Tente novamente mais tarde.</p>
+    {% endfor %}
+</nav>
+
+{% endblock content %}

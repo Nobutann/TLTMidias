@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="erro-acesso-artigo">
+    <p class="mensagem-erro">{{ message }}</p>
+
+    {# Tenta usar referer para link; caso não tenha, usa history.back() #}
+    {% if referer and referer != '/' %}
+        <p><a href="{{ referer }}">Voltar</a></p>
+    {% else %}
+        <p><button onclick="window.history.back();">Voltar</button></p>
+    {% endif %}
+</div>
+
+{% endblock content %}
