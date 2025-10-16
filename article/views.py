@@ -62,3 +62,6 @@ def article_detail(request, slug):
             'message': 'Erro ao carregar o artigo',
             'referer': referer
         })
+
+def publish_articles(request):
+    pass
