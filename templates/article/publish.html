@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Publicar Artigo{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Publicar novo artigo</h1>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data" id="publish-form">
+    {% csrf_token %}
+    <div>
+      {{ form.non_field_errors }}
+    </div>
+
+    <label for="id_title">Título</label>
+    {{ form.title.errors }}
+    {{ form.title }}
+
+    <label for="id_content">Conteúdo</label>
+    {{ form.content.errors }}
+    {{ form.content }}
+
+    <label for="id_image">Imagem (opcional)</label>
+    {{ form.image.errors }}
+    {{ form.image }}
+
+    <label for="id_author">Autor</label>
+    {{ form.author.errors }}
+    {{ form.author }}
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">Publicar</button>
+  <a href="{% url 'home' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+
+  <script>
+    (function(){
+      const form = document.getElementById('publish-form');
+      form.addEventListener('submit', function(e){
+        const title = document.getElementById('id_title');
+        const content = document.getElementById('id_content');
+        let errors = [];
+        if(!title || !title.value.trim()) errors.push('O título é obrigatório.');
+        if(!content || !content.value.trim()) errors.push('O conteúdo é obrigatório.');
+        if(errors.length){
+          e.preventDefault();
+          alert(errors.join('\n'));
+        }
+      });
+    })();
+  </script>
+</div>
+{% endblock %}

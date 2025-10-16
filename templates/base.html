@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Jornal TLTMidias</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/css/article-pages.css' %}">
 </head>
 <body>
 
-    <header>
-        <h1>Nosso Jornal</h1>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <img class="logo" src="{% static 'main/img/jc-logo.png' %}" alt="Logo">
+            <h1 class="site-title">Nosso Jornal</h1>
+        </div>
     </header>
 
     <main>

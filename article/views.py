@@ -68,40 +68,41 @@ def publish_article(request):
         form = ArticleForms(request.POST, request.FILES)
         if form.is_valid():
             article = form.save()
-            article.save()
-            return redirect('detail') #Lucca, aqui tu redireciona pra página que tu quiser no front
-    
+            return redirect('artigo', slug=article.slug)
+    else:
+        form = ArticleForms()
+
     context = {
         'form': form
     }
 
-    return render(request, '', context) #Lucca, denovo, aqui tu renderiza a página html que tu for fazer
+    return render(request, 'article/publish.html', context)
 
 def edit_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
-    
     if request.method == 'POST':
         form = ArticleForms(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
-            return redirect('detail', pk=article.pk) #Denovo, pode redirecionar pra página que achar melhor, coloquei placeholder
-        
+            return redirect('artigo', slug=article.slug)
+    else:
+        form = ArticleForms(instance=article)
+
     context = {
         'form': form,
         'article': article
     }
 
-    return render(request, '', context) #Lucca, novamente, aqui tu renderiza o html que tu for fazer pra editar
+    return render(request, 'article/edit.html', context)
 
 def delete_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
 
     if request.method == 'POST':
         article.delete()
-        return redirect('list_page')
+        return redirect('home')
     
     context = {
         'article': article
     }
-
-    return render(request, '', context) #Novamente, renderiza pra página html que for criar
+    return render(request, 'article/confirm_delete.html', context)

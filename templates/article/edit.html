@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Artigo{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Editar artigo</h1>
+
+  {% if article %}
+    <section class="preview">
+      <h2>Pré-visualização</h2>
+      <article class="article-preview">
+        <h3>{{ article.title }}</h3>
+        {% if article.image %}
+          <img src="{{ article.image.url }}" alt="{{ article.title }}" style="max-width:100%;height:auto;" />
+        {% endif %}
+        <div class="content">{{ article.content|linebreaks }}</div>
+        <p class="meta">Publicado por {{ article.author }} em {{ article.published_date }}</p>
+      </article>
+    </section>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data" id="edit-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <label for="id_title">Título</label>
+    {{ form.title.errors }}
+    {{ form.title }}
+
+    <label for="id_content">Conteúdo</label>
+    {{ form.content.errors }}
+    {{ form.content }}
+
+    <label for="id_image">Imagem</label>
+    {{ form.image.errors }}
+    {{ form.image }}
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">Salvar alterações</button>
+  <a href="{% url 'artigo' article.slug %}" class="btn btn-secondary">Voltar</a>
+    </div>
+  </form>
+
+  <script>
+    (function(){
+      const titleEl = document.getElementById('id_title');
+      const contentEl = document.getElementById('id_content');
+      const previewTitle = document.querySelector('.article-preview h3');
+      const previewContent = document.querySelector('.article-preview .content');
+      if(titleEl && previewTitle){
+        titleEl.addEventListener('input', ()=> previewTitle.textContent = titleEl.value || 'Título do artigo');
+      }
+      if(contentEl && previewContent){
+        contentEl.addEventListener('input', ()=> previewContent.textContent = contentEl.value || 'Conteúdo do artigo');
+      }
+    })();
+  </script>
+</div>
+{% endblock %}
