@@ -41,3 +41,24 @@ def subcategory_articles(request, slug):
     articles = Article.objects.filter(subcategory=subcategory).order_by('-published_date')
     context = {'title': subcategory.title, 'articles': articles}
     return render(request, 'article/index.html', context)
+
+def article_detail(request, slug):
+    """Exibe o artigo pelo slug ou mostra uma página de erro se não for encontrado."""
+    try:
+        article = Article.objects.get(slug=slug)
+        context = {'article': article}
+        return render(request, 'article/detail.html', context)
+
+    except Article.DoesNotExist:
+        referer = request.META.get('HTTP_REFERER', '/')
+        return render(request, 'article/error.html', {
+            'message': 'Artigo não encontrado',
+            'referer': referer
+        })
+
+    except Exception:
+        referer = request.META.get('HTTP_REFERER', '/')
+        return render(request, 'article/error.html', {
+            'message': 'Erro ao carregar o artigo',
+            'referer': referer
+        })
