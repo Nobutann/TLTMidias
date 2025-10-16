@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Article, Category, Subcategory 
-
+from .forms import ArticleForms
 
 def home(request):
     categories = Category.objects.all().order_by('title')
@@ -64,4 +64,15 @@ def article_detail(request, slug):
         })
 
 def publish_articles(request):
-    pass
+    if request.method == 'POST':
+        form = ArticleForms(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=True)
+            article.save()
+            return redirect('') #Lucca, aqui tu redireciona pra página que tu quiser no front
+    
+    context = {
+        'form': form
+    }
+
+    return render(request, '', context) #Lucca, denovo, aqui tu renderiza a página html que tu for fazer
