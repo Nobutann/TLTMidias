@@ -23,7 +23,7 @@ def home(request):
             menu_data[category_title]['subcategories'].append(subcategory) 
 
     context = {'menu': menu_data}
-    return render(request, 'article/index.html', context)
+    return render(request, 'main/index.html', context)
 
 
 def category_articles(request, slug):
@@ -40,7 +40,7 @@ def subcategory_articles(request, slug):
     
     articles = Article.objects.filter(subcategory=subcategory).order_by('-published_date')
     context = {'title': subcategory.title, 'articles': articles}
-    return render(request, 'article/index.html', context)
+    return render(request, 'main/index.html', context)
 
 def article_detail(request, slug):
     """Exibe o artigo pelo slug ou mostra uma página de erro se não for encontrado."""
