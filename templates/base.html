@@ -29,7 +29,9 @@
             <div class="container">
                 <div class="header-content">
                     <h1 class="logo">
-                        <a href="{% url 'article:homepage' %}">Jornal do Commercio</a>
+                        <a href="{% url 'article:homepage' %}">
+                            <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio">
+                        </a>
                     </h1>
                     <div class="header-actions">
                         <form action="#" class="search-form", method="get">
@@ -46,7 +48,7 @@
                 <ul class="nav-list" id="navList">
                     <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
                     {% for category in categories %}
-                        <li><a href="{% url 'articles:category' category.slug %}" class="nav-link">{{ category.title }}</a></li>
+                        <li><a href="#" class="nav-link">{{ category.title }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -61,7 +63,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section footer-about">
-                    <h2 class="footer-logo">Jornal do Commercio</h2>
+                    <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio" class="footer-logo">
                     <p>Seu portal de notícias confiável, trazendo informação de qualidade 24 horas por dia.</p>
                     <div class="footer-social-icons">
                         <a href="#" class="social-icon-links"></a>
@@ -74,7 +76,7 @@
                     <h3>Categorias</h3>
                     <ul class="footer-list">
                         {% for category in categories|slice:":5" %}
-                            <li><a href="{% url 'articles:category' category.slug %}">{{category.title}}</a></li>
+                            <li><a href="#">{{category.title}}</a></li>
                         {% endfor %}
                     </ul>
                 </div>

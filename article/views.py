@@ -24,7 +24,7 @@ def publish_article(request):
         form = ArticleForms(request.POST, request.FILES)
         if form.is_valid():
             article = form.save()
-            return redirect('artigo', slug=article.slug)
+            return redirect('article:homepage')
     else:
         form = ArticleForms()
 
@@ -56,7 +56,7 @@ def delete_article(request, pk):
 
     if request.method == 'POST':
         article.delete()
-        return redirect('home')
+        return redirect('index')
     
     context = {
         'article': article
