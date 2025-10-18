@@ -1,28 +1,92 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Jornal TLTMidias</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'main/css/article-pages.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Jornal do Commercio{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'article/css/style.css' %}">
 </head>
 <body>
-
-    <header class="topbar">
-        <div class="topbar-inner">
-            <img class="logo" src="{% static 'main/img/jc-logo.png' %}" alt="Logo">
-            <h1 class="site-title">Nosso Jornal</h1>
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="header-info">
+                        <span class="date">{{ "now"|date:"l, d F Y" }}</span>
+                        <span class="separator">|</span>
+                        <span class="temp">Recife, PE</span>
+                    </div>
+                    <div class="header-social">
+                        <a href="#" class="social-icon">Facebook</a>
+                        <a href="#" class="social-icon">Twitter</a>
+                        <a href="#" class="social-icon">Instagram</a>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="header-main">
+            <div class="container">
+                <div class="header-content">
+                    <h1 class="logo">
+                        <a href="{% url 'article:homepage' %}">
+                            <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio">
+                        </a>
+                    </h1>
+                    <div class="header-actions">
+                        <form action="#" class="search-form", method="get">
+                            <input type="text" name="q" placeholder="Buscar notícias..." class="search-input">
+                            <button type="submit" class="search-btn">Pesquisar</button>
+                        </form>
+                        <button class="menu-toggle" id="menuToggle">☰</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <ul class="nav-list" id="navList">
+                    <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
+                    {% for category in categories %}
+                        <li><a href="#" class="nav-link">{{ category.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
     </header>
 
     <main>
-        {% block content %}
-        {% endblock content %}
+        {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <p>Desenvolvimento Django</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-about">
+                    <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio" class="footer-logo">
+                    <p>Seu portal de notícias confiável, trazendo informação de qualidade 24 horas por dia.</p>
+                    <div class="footer-social-icons">
+                        <a href="#" class="social-icon-links"></a>
+                        <a href="#" class="social-icon-links"></a>
+                        <a href="#" class="social-icon-links"></a>
+                        <a href="#" class="social-icon-links"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Categorias</h3>
+                    <ul class="footer-list">
+                        {% for category in categories|slice:":5" %}
+                            <li><a href="#">{{category.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2025 TLTMídias. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </div>
     </footer>
-
+    
+    <script src="{% static 'article/js/script.js' %}"></script>
 </body>
 </html>

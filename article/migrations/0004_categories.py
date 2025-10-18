@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-def categories(apps, schema_editor):
+def create_categories(apps, schema_editor):
     Category = apps.get_model('article', 'Category')
 
     categories = [
@@ -14,7 +14,7 @@ def categories(apps, schema_editor):
     ]
 
     for category in categories:
-        Category.objects.create(slug=category['slug'], defaults={'title': category['title']})
+        Category.objects.get_or_create(slug=category['slug'], defaults={'title': category['title']})
 
 def remove_categories(apps, schema_editor):
     Category = apps.get_model('article', 'Category')
@@ -27,4 +27,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(create_categories, remove_categories),
     ]
