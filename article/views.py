@@ -66,9 +66,14 @@ def delete_article(request, pk):
 
 def article_details(request, pk):
     article = get_object_or_404(Article, pk=pk)
+    categories = Category.objects.all()
+
+    related_articles = Article.objects.filter(category=article.category).exclude(pk=article.pk).order_by('-published_date')[:4]
 
     context = {
-        'article': article
+        'article': article,
+        'categories': categories,
+        'related_articles': related_articles
     }
 
     return render(request, 'article/article_details.html', context)
