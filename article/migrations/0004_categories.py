@@ -9,7 +9,7 @@ def create_categories(apps, schema_editor):
         {'title': 'Esportes', 'slug': 'esportes'},
         {'title': 'Política', 'slug': 'politica'},
         {'title': 'Economia', 'slug': 'economia'},
-        {'title': 'cultura', 'slug': 'cultura'},
+        {'title': 'Cultura', 'slug': 'cultura'},
         {'title': 'Tecnologia', 'slug': 'tecnologia'},
     ]
 

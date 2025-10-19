@@ -89,6 +89,20 @@ img {
     transition: color 0.3s;
 }
 
+.social-icon svg {
+    width: 25px;       
+    height: 25px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.social-icon img {
+    height: 23px;
+    width: auto;
+    display: block;
+    padding-top: 2px;
+}
+
 .social-icon:hover {
     color: var(--accent-color);
 }
