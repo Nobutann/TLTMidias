@@ -1,54 +1,56 @@
-{% load static %}
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Jornal do Commercio{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'article/css/style.css' %}">
+    {% tailwind_css %}
 </head>
-<body>
-    <header class="header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-top-content">
-                    <div class="header-info">
+<body class="m-0 p-0 font-sans leading-relaxed text-[#2d3436] bg-white overflow-x-hidden">
+    <header class="bg-white sticky top-0 z-[1000] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+        <div class="bg-[#1a1a2e] text-white text-[0.85rem] py-2">
+            <div class="max-w-[1400px] mx-auto px-10">
+                <div class="flex justify-between items-center">
+                    <div class="flex gap-4 items-center">
                         <span class="date">{{ "now"|date:"l, d F Y" }}</span>
-                        <span class="separator">|</span>
+                        <span class="separator text-white/30">|</span>
                         <span class="temp">Recife, PE</span>
                     </div>
-                    <div class="header-social">
-                        <a href="#" class="social-icon">Facebook</a>
-                        <a href="#" class="social-icon">Twitter</a>
-                        <a href="#" class="social-icon">Instagram</a>
+                    <div class="header-social flex gap-6">
+                        <a href="#" class="social-icon text-white/80 text-[0.85rem] hover:text-[#e94560] transition-colors duration-300">Facebook</a>
+                        <a href="#" class="social-icon text-white/80 text-[0.85rem] hover:text-[#e94560] transition-colors duration-300">Twitter</a>
+                        <a href="#" class="social-icon text-white/80 text-[0.85rem] hover:text-[#e94560] transition-colors duration-300">Instagram</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="header-main">
-            <div class="container">
-                <div class="header-content">
+        <div class="header-main py-6 border-b border-[#dfe6e9]">
+            <div class="container max-w-[1400px] mx-auto px-10">
+                <div class="header-content flex justify-between items-center">
                     <h1 class="logo">
                         <a href="{% url 'article:homepage' %}">
-                            <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio">
+                            <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio" class="h-[45px] w-auto block">
                         </a>
                     </h1>
-                    <div class="header-actions">
-                        <form action="#" class="search-form", method="get">
-                            <input type="text" name="q" placeholder="Buscar notícias..." class="search-input">
-                            <button type="submit" class="search-btn">Pesquisar</button>
+                    <div class="header-actions flex gap-4 items-center">
+                        <form action="#" class="search-form flex items-center bg-[#f8f9fa] rounded-[25px] px-5 py-2 transition-all duration-300 focus-within:bg-white focus-within:shadow-[0_2px_8px_rgba(0,0,0,0.08)]" method="get">
+                            <input type="text" name="q" placeholder="Buscar notícias..." class="search-input border-none bg-transparent px-2 py-1 text-[0.95rem] w-[250px] outline-none">
+                            <button type="submit" class="search-btn bg-none border-none text-xl cursor-pointer text-[#636e72] hover:scale-110 hover:text-[#e94560] transition-transform duration-200">Pesquisar</button>
                         </form>
-                        <button class="menu-toggle" id="menuToggle">☰</button>
+                        <button class="menu-toggle hidden bg-none border-none text-[1.8rem] cursor-pointer text-[#1a1a2e]" id="menuToggle">☰</button>
                     </div>
                 </div>
             </div>
         </div>
-        <nav class="main-nav">
-            <div class="container">
-                <ul class="nav-list" id="navList">
-                    <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
+        <nav class="main-nav bg-[#f8f9fa] border-b-[3px] border-[#e94560]">
+            <div class="container max-w-[1400px] mx-auto px-10">
+                <ul class="nav-list flex list-none gap-0 flex-wrap" id="navList">
+                    <li class="relative">
+                        <a href="{% url 'article:homepage' %}" class="nav-link block px-6 py-4 text-[#2d3436] font-semibold text-[0.95rem] uppercase tracking-[0.5px] relative hover:text-[#e94560] hover:bg-[rgba(233,69,96,0.05)] transition-all duration-300 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:w-0 before:h-[3px] before:bg-[#e94560] before:transition-[width] before:duration-300 hover:before:w-[70%]">Home</a>
+                    </li>
                     {% for category in categories %}
-                        <li><a href="#" class="nav-link">{{ category.title }}</a></li>
+                        <li class="relative"><a href="#" class="nav-link block px-6 py-4 text-[#2d3436] font-semibold text-[0.95rem] uppercase tracking-[0.5px] relative hover:text-[#e94560] hover:bg-[rgba(233,69,96,0.05)] transition-all duration-300 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:w-0 before:h-[3px] before:bg-[#e94560] before:transition-[width] before:duration-300 hover:before:w-[70%]">{{ category.title }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -59,28 +61,28 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
+    <footer class="footer bg-gradient-to-br from-[#1a1a2e] to-[#16213e] text-white mt-20">
+        <div class="container max-w-[1400px] mx-auto px-10">
+            <div class="footer-content grid grid-cols-[2fr_1fr_1fr_1.5fr] gap-12 py-16 pb-12">
                 <div class="footer-section footer-about">
-                    <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio" class="footer-logo">
-                    <p>Seu portal de notícias confiável, trazendo informação de qualidade 24 horas por dia.</p>
-                    <div class="footer-social-icons">
-                        <a href="#" class="social-icon-links"></a>
-                        <a href="#" class="social-icon-links"></a>
-                        <a href="#" class="social-icon-links"></a>
-                        <a href="#" class="social-icon-links"></a>
+                    <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio" class="footer-logo h-[100px] w-auto block mb-6">
+                    <p class="text-white/80 leading-[1.7] mb-6">Seu portal de notícias confiável, trazendo informação de qualidade 24 horas por dia.</p>
+                    <div class="footer-social-icons flex gap-4">
+                        <a href="#" class="social-icon-links w-10 h-10 flex items-center justify-center bg-white/10 rounded-full font-bold hover:bg-[#e94560] hover:-translate-y-1 transition-all duration-300"></a>
+                        <a href="#" class="social-icon-links w-10 h-10 flex items-center justify-center bg-white/10 rounded-full font-bold hover:bg-[#e94560] hover:-translate-y-1 transition-all duration-300"></a>
+                        <a href="#" class="social-icon-links w-10 h-10 flex items-center justify-center bg-white/10 rounded-full font-bold hover:bg-[#e94560] hover:-translate-y-1 transition-all duration-300"></a>
+                        <a href="#" class="social-icon-links w-10 h-10 flex items-center justify-center bg-white/10 rounded-full font-bold hover:bg-[#e94560] hover:-translate-y-1 transition-all duration-300"></a>
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h3>Categorias</h3>
-                    <ul class="footer-list">
+                    <h3 class="text-[1.3rem] mb-6 font-bold text-white">Categorias</h3>
+                    <ul class="footer-list list-none">
                         {% for category in categories|slice:":5" %}
-                            <li><a href="#">{{category.title}}</a></li>
+                            <li class="mb-3"><a href="#" class="text-white/80 hover:text-[#e94560] hover:translate-x-1 inline-block transition-all duration-300">{{category.title}}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="footer-bottom">
+                <div class="footer-bottom border-t border-white/10 py-8 flex justify-between items-center text-white/60 text-sm col-span-full">
                     <p>© 2025 TLTMídias. Todos os direitos reservados.</p>
                 </div>
             </div>

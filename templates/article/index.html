@@ -4,25 +4,25 @@
 {% block title %}Jornal do Commercio{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container max-w-[1400px] mx-auto px-10">
     {% if articles %}
-    <section class="hero-section">
-        <div class="hero-grid">
+    <section class="hero-section py-12 bg-gradient-to-b from-[#f8f9fa] to-white">
+        <div class="hero-grid grid grid-cols-[2fr_1fr] gap-8">
             {% with articles.0 as featured %}
-            <article class="hero-main">
-                <a href="#" class="hero-link">
+            <article class="hero-main relative rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-transform duration-300">
+                <a href="#" class="hero-link block">
                     {% if featured.image %}
-                    <div class="hero-image">
-                        <img src="{{ featured.image.url }}" alt="{{ featured.title }}">
+                    <div class="hero-image relative h-[550px] overflow-hidden">
+                        <img src="{{ featured.image.url }}" alt="{{ featured.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.08]">
                         {% if featured.category %}
-                        <span class="category-overlay">{{ featured.category.title }}</span>
+                        <span class="category-overlay absolute top-6 left-6 bg-[#e94560] text-white px-5 py-2 rounded-[25px] text-[0.85rem] font-bold uppercase tracking-[0.5px] shadow-[0_4px_15px_rgba(0,0,0,0.1)]">{{ featured.category.title }}</span>
                         {% endif %}
                     </div>
                     {% endif %}
-                    <div class="hero-content">
-                        <h2 class="hero-title">{{featured.title}}</h2>
-                        <p class="hero-excerpt">{{ featured.content|truncatewords:35 }}</p>
-                        <div class="article-meta">
+                    <div class="hero-content absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 to-transparent p-8 pt-12 text-white">
+                        <h2 class="hero-title text-[2.2rem] leading-tight mb-4 font-extrabold">{{featured.title}}</h2>
+                        <p class="hero-excerpt text-[1.1rem] leading-relaxed mb-4 text-white/90">{{ featured.content|truncatewords:35 }}</p>
+                        <div class="article-meta flex gap-4 text-sm text-white/70 pt-4 border-t border-white/10">
                             <span class="author">{{ featured.author }}</span>
                             <span class="date">{{ featured.published_date|date:"d/m/Y H:i" }}</span>
                         </div>
@@ -31,21 +31,21 @@
             </article>
             {% endwith %}
 
-            <div class="hero-sidebar">
+            <div class="hero-sidebar flex flex-col gap-6">
                 {% for article in articles|slice:"1:4" %}
-                <article class="hero-secondary">
-                    <a href="#" class="hero-secondary-link">
+                <article class="hero-secondary bg-white rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:translate-x-1 hover:shadow-[0_4px_15px_rgba(0,0,0,0.1)] transition-all duration-300">
+                    <a href="#" class="hero-secondary-link flex gap-4">
                         {% if article.image %}
-                        <div class="hero-secondary-image">
-                            <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                        <div class="hero-secondary-image w-[140px] h-[140px] flex-shrink-0 overflow-hidden">
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
                         </div>
                         {% endif %}
-                        <div class="hero-secondary-content">
+                        <div class="hero-secondary-content p-4 pr-4 flex flex-col justify-center">
                             {% if article.category %}
-                            <span class="category-tag-small">{{ article.category.title }}</span>
+                            <span class="category-tag-small inline-block bg-[#e94560] text-white px-3 py-1 rounded-[15px] text-[0.7rem] font-bold mb-2 w-fit uppercase">{{ article.category.title }}</span>
                             {% endif %}
-                            <h3 class="hero-secondary-title">{{ article.title }}</h3>
-                            <div class="article-meta small">
+                            <h3 class="hero-secondary-title text-[1.05rem] leading-snug mb-2 font-bold text-[#2d3436] line-clamp-2">{{ article.title }}</h3>
+                            <div class="article-meta small flex gap-4 text-[0.75rem] text-[#b2bec3] pt-0 border-t-0">
                                 <span class="date">{{ article.published_date|date:"d/m/Y" }}</span>
                             </div>
                         </div>
@@ -57,36 +57,36 @@
     </section>
     {% endif %}
 
-    <section class="article-section">
-        <div class="section-header">
-            <h2 class="section-title">Últimas Notícias</h2>
-            <a href="#" class="view-all">Ver todas</a>
+    <section class="article-section py-16">
+        <div class="section-header flex justify-between items-center mb-10 pb-4 border-b-[3px] border-[#e94560]">
+            <h2 class="section-title text-[2rem] font-extrabold text-[#1a1a2e] relative">Últimas Notícias</h2>
+            <a href="#" class="view-all text-[#e94560] font-semibold text-base hover:translate-x-1 transition-transform duration-300">Ver todas</a>
         </div>
 
-        <div class="article-grid">
+        <div class="article-grid grid grid-cols-4 gap-8">
             {% for article in articles %}
                 {% if forloop.counter > 4 %}
-                <article class="article-card">
-                    <a href="#" class="article-link">
+                <article class="article-card bg-white rounded-xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300">
+                    <a href="#" class="article-link block">
                         {% if article.image %}
-                        <div class="article-image">
-                            <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                        <div class="article-image relative w-full h-[220px] overflow-hidden bg-[#f8f9fa]">
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-full object-cover hover:scale-[1.12] transition-transform duration-400">
                             {% if article.category %}
-                            <span class="category-badge">{{article.category.title}}</span>
+                            <span class="category-badge absolute top-4 left-4 bg-[#e94560] text-white px-4 py-2 rounded-[20px] text-[0.75rem] font-bold uppercase shadow-[0_2px_8px_rgba(0,0,0,0.08)]">{{article.category.title}}</span>
                             {% endif %}
                         </div>
                         {% else %}
-                        <div class="article-image article-image-placeholder">
+                        <div class="article-image article-image-placeholder w-full h-[220px] flex items-center justify-center text-6xl text-[#b2bec3] bg-[#ecf0f1]">
                             <span>📰</span>
                         </div>
                         {% endif %}
 
-                        <div class="article-content">
-                            <h3 class="article-title">{{ article.title }}</h3>
+                        <div class="article-content p-6">
+                            <h3 class="article-title text-[1.15rem] leading-snug mb-3 font-bold text-[#2d3436] line-clamp-2 hover:text-[#e94560] transition-colors duration-300">{{ article.title }}</h3>
 
-                            <p class="article-excerpt">{{ article.content|truncatewords:20 }}</p>
+                            <p class="article-excerpt text-[#636e72] text-[0.9rem] leading-relaxed mb-4 line-clamp-2">{{ article.content|truncatewords:20 }}</p>
 
-                            <div class="article-meta">
+                            <div class="article-meta flex gap-4 text-[0.8rem] text-[#b2bec3] pt-4 border-t border-[#dfe6e9]">
                                 <span class="author">{{ article.author }}</span>
                                 <span class="date">{{ article.published_date|date:"d/m/Y" }}</span>
                             </div>
@@ -95,25 +95,25 @@
                 </article>
                 {% endif %}
             {% empty %}
-                <p class="no-articles">Nenhum artigo publicado ainda.</p>
+                <p class="no-articles col-span-full text-center py-16 px-8 text-[#636e72] text-xl">Nenhum artigo publicado ainda.</p>
             {% endfor %}
         </div>
     </section>
 
     {% if articles.has_other_pages %}
-    <div class="pagination">
+    <div class="pagination flex justify-center items-center gap-3 my-16 mb-8">
         {% if articles.has_previous %}
-            <a href="?page=1" class="pagination-link">Primeira</a>
-            <a href="?page{{ articles.previous_page_number }}" class="pagination-link">Anterior</a>
+            <a href="?page=1" class="pagination-link px-6 py-3 bg-white border-2 border-[#dfe6e9] rounded-lg text-[#2d3436] font-semibold hover:bg-[#e94560] hover:text-white hover:border-[#e94560] hover:-translate-y-1 transition-all duration-300">Primeira</a>
+            <a href="?page{{ articles.previous_page_number }}" class="pagination-link px-6 py-3 bg-white border-2 border-[#dfe6e9] rounded-lg text-[#2d3436] font-semibold hover:bg-[#e94560] hover:text-white hover:border-[#e94560] hover:-translate-y-1 transition-all duration-300">Anterior</a>
         {% endif %}
 
-        <span class="pagination-current">
+        <span class="pagination-current px-6 py-3 bg-[#e94560] text-white rounded-lg font-bold shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
             Página {{ articles.number }} de {{ articles.paginator.num_pages }}
         </span>
 
         {% if articles.has_next %}
-            <a href="?page{{ articles.next_page_number }}" class="pagination-link">Próxima</a>
-            <a href="?page{{ articles.paginator.num_pages }}" class="pagination-link">Última</a>
+            <a href="?page{{ articles.next_page_number }}" class="pagination-link px-6 py-3 bg-white border-2 border-[#dfe6e9] rounded-lg text-[#2d3436] font-semibold hover:bg-[#e94560] hover:text-white hover:border-[#e94560] hover:-translate-y-1 transition-all duration-300">Próxima</a>
+            <a href="?page{{ articles.paginator.num_pages }}" class="pagination-link px-6 py-3 bg-white border-2 border-[#dfe6e9] rounded-lg text-[#2d3436] font-semibold hover:bg-[#e94560] hover:text-white hover:border-[#e94560] hover:-translate-y-1 transition-all duration-300">Última</a>
         {% endif %}
     </div>
     {% endif %}

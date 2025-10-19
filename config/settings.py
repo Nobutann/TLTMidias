@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'article',
     'comments',
+    'tailwind',
+    'theme',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+TAILWIND_APP_NAME = 'theme'
+
+NPM_BIN_PATH = r"C:/Program Files/nodejs/npm.cmd"
 
 TEMPLATES = [
     {
