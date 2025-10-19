@@ -10,7 +10,7 @@
         <div class="hero-grid">
             {% with articles.0 as featured %}
             <article class="hero-main">
-                <a href="#" class="hero-link">
+                <a href="{% url 'article:details' featured.pk %}" class="hero-link">
                     {% if featured.image %}
                     <div class="hero-image">
                         <img src="{{ featured.image.url }}" alt="{{ featured.title }}">
@@ -34,7 +34,7 @@
             <div class="hero-sidebar">
                 {% for article in articles|slice:"1:4" %}
                 <article class="hero-secondary">
-                    <a href="#" class="hero-secondary-link">
+                    <a href="{% url 'article:details' article.pk %}" class="hero-secondary-link">
                         {% if article.image %}
                         <div class="hero-secondary-image">
                             <img src="{{ article.image.url }}" alt="{{ article.title }}">
@@ -67,7 +67,7 @@
             {% for article in articles %}
                 {% if forloop.counter > 4 %}
                 <article class="article-card">
-                    <a href="#" class="article-link">
+                    <a href="{% url 'article:details' article.pk %}" class="article-link">
                         {% if article.image %}
                         <div class="article-image">
                             <img src="{{ article.image.url }}" alt="{{ article.title }}">
