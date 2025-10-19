@@ -8,4 +8,5 @@ urlpatterns = [
     path('publish/', views.publish_article, name = 'publish_article'),
     path('edit/<int:pk>/', views.edit_article, name= 'edit_article'),
     path('delete/<int:pk>/', views.delete_article, name= 'delete_article'),
+    path('article/<int:pk>/', views.article_details, name='details'),
 ]

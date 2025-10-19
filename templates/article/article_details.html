@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<article class="article-detail">
+    <div class="article-detail-container">
+        <nav class="breadcrumb">
+            <a href="{% url 'article:homepage' %}">Home</a>
+            <span class="breadcrumb-separator">></span>
+            {% if article.category %}
+                <a href="#">{{ article.category.title }}</a>
+                <span class="breadcrumb-separator">></span>
+            {% endif %}
+            <span class="breadcrumb-current">{{ article.title|truncatewords:5 }}</span>
+        </nav>
+
+        <header class="article-header">
+            {% if article.category %}
+            <a href="#" class="article-category-badge">
+                {{ article.category.title }}
+            </a>
+            {% endif %}
+
+            <h1 class="article-detail-title">{{ article.title }}</h1>
+
+            <div class="article-detail-meta">
+                <div class="meta-left">
+                    <span class="meta-author">Por {{ article.author }}</span>
+                    <span class="meta-separator">-</span>
+                    <time class="meta-date" datetime="{{ article.published_date|date:'Y-m-d' }}">
+                        {{ article.published_date|date:"d/m/Y \à\s H:i" }}
+                    </time>
+                </div>
+                <div class="meta-share">
+                    <button class="share-btn" title="Compartilhar">
+                        <span>🔗</span> Compartilhar
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        {% if article.image %}
+        <figure class="article-featured-image">
+            <img src="{{ article.image.url }}" alt="{{ article.title }}">
+            <figcaption class="image-caption">{{ article.title }}</figcaption>
+        </figure>
+        {% endif %}
+
+        <div class="article-body">
+            <div class="article-content-main">
+                {{ article.content|linebreaks }}
+            </div>
+
+            <aside class="article-sidebar">
+                <div class="author-box">
+                    <div class="author-avatar">
+                        <span>{{ article.author|first }}</span>
+                    </div>
+                    <div class="author-info">
+                        <h3>{{ article.author }}</h3>
+                        <p class="author-role">Jornalista</p>
+                    </div>
+                </div>
+
+                <div class="share-box">
+                    <h3>Compartilhar</h3>
+                    <div class="header-social">
+                        <a href="#" class="social-icon">
+                            <svg viewBox="0 0 48 45" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"/>
+                                <path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"/>
+                            </svg>
+                        </a>
+
+                        <a href="#" class="social-icon">
+                            <svg viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                            </svg>
+                        </a>
+
+                        <a href="#" class="social-icon">
+                            <img src="{% static 'article/img/instagram_logo_2016.svg.png' %}" alt="Instagram">
+                        </a>
+                    </div>
+
+                    <div class="sidebar-ad">
+                        <span class="ad-label">Publicidade</span>
+                        <div class="ad-placeholder">
+                            <p>Espaço para <br>Anúncio</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        {% if article.category or article.subcategory %}
+        <div class="article-tags">
+            <strong>Tags:</strong>
+            {% if article.category %}
+                <a href="#" class="tag">
+                    {{ article.category.title }}
+                </a>
+            {% endif %}
+            {% if article.subcategory %}
+                <a href="#" class="tag">
+                    {{ article.subcategory.title }}
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</article>
+
+<section class="related-articles">
+    <div class="container">
+        <h2 class="section-title">Leia Também</h2>
+        <div class="related-grid">
+            {% for related in related_articles %}
+            <article class="related-card">
+                <a href="{% url 'article:details' related.pk %}" class="related-link">
+                    {% if related.image %}
+                    <div class="related-image">
+                        <img src="{{ related.image.url }}" alt="{{ related.title }}">
+                    </div>
+                    {% else %}
+                    <div class="related-image related-image-placeholder">
+                        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="120" height="120" fill="#EFF1F3"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M33.2503 38.4816C33.2603 37.0472 34.4199 35.8864 35.8543 35.875H83.1463C84.5848 35.875 85.7503 37.0431 85.7503 38.4816V80.5184C85.7403 81.9528 84.5807 83.1136 83.1463 83.125H35.8543C34.4158 83.1236 33.2503 81.957 33.2503 80.5184V38.4816ZM80.5006 41.1251H38.5006V77.8751L62.8921 53.4783C63.9172 52.4536 65.5788 52.4536 66.6039 53.4783L80.5006 67.4013V41.1251ZM43.75 51.6249C43.75 54.5244 46.1005 56.8749 49 56.8749C51.8995 56.8749 54.25 54.5244 54.25 51.6249C54.25 48.7254 51.8995 46.3749 49 46.3749C46.1005 46.3749 43.75 48.7254 43.75 51.6249Z" fill="#687787"></path> </g></svg>
+                    </div>
+                    {% endif %}
+                    <div class="related-content">
+                        {% if related.category %}
+                        <span class="related-category">{{ related.category.title }}</span>
+                        {% endif %}
+                        <h3 class="related-title">{{ related.title }}</h3>
+                        <time class="related-date">{{ related.published_date|date:"d/m/Y" }}</time>
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
