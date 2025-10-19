@@ -61,4 +61,14 @@ def delete_article(request, pk):
     context = {
         'article': article
     }
+
     return render(request, 'article/confirm_delete.html', context)
+
+def article_details(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+
+    context = {
+        'article': article
+    }
+
+    return render(request, 'article/article_details.html', context)
