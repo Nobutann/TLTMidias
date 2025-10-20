@@ -114,8 +114,18 @@ img {
 
 .header-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;  
     align-items: center;
+    position: relative;        
+    min-height: 45px;         
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0; 
 }
 
 .logo a {
@@ -139,6 +149,8 @@ img {
     display: flex;
     gap: 1rem;
     align-items: center;
+    grid-column: 3 / 4; 
+    justify-self: end;  
 }
 
 .search-form {

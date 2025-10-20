@@ -62,15 +62,18 @@
             </div>
         </div>
         <nav class="main-nav">
-            <div class="container">
-                <ul class="nav-list" id="navList">
-                    <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
-                    {% for category in categories %}
-                        <li><a href="#" class="nav-link">{{ category.title }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </nav>
+    <div class="container">
+        <ul class="nav-list" id="navList">
+            <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
+            
+            {% for category in categories %}
+                <li>
+                    <a href="{% url 'article:category_page' category_slug=category.slug %}" class="nav-link">{{ category.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
     </header>
 
     <main>
