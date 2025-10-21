@@ -4,8 +4,16 @@ from .forms import ArticleForms
 from django.core.paginator import Paginator
 
 def homepage(request):
-    articles_list = Article.objects.all().order_by('-published_date')
     categories = Category.objects.all()
+
+    category_slug = request.GET.get('categoria') 
+
+    if category_slug:
+        articles_list = Article.objects.filter(
+            category__slug=category_slug
+        ).order_by('-published_date')
+    else:
+        articles_list = Article.objects.all().order_by('-published_date')
 
     paginator = Paginator(articles_list, 10)
     page_number = request.GET.get('page')
@@ -77,3 +85,27 @@ def article_details(request, pk):
     }
 
     return render(request, 'article/article_details.html', context)
+def category_page(request, category_slug):
+    
+    category = get_object_or_404(Category, slug=category_slug)
+    
+    
+    categories = Category.objects.all()
+
+    
+    articles_list = Article.objects.filter(
+        category=category
+    ).order_by('-published_date')
+
+    
+    paginator = Paginator(articles_list, 10)
+    page_number = request.GET.get('page')
+    articles = paginator.get_page(page_number)
+
+    context = {
+        'categories': categories,     
+        'articles': articles,         
+        'current_category': category, 
+    }
+
+    return render(request, 'article/index.html', context)
