@@ -12,22 +12,54 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f=#h!$@$%ggs!l%(h(e)iepb^tnt3#%rmago^u*-ig90m+=n&x'
+TARGET_ENV = os.getenv('TARGET_ENV')
+NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+if NOT_PROD:
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'django-insecure-f=#h!$@$%ggs!l%(h(e)iepb^tnt3#%rmago^u*-ig90m+=n&x'
+    ALLOWED_HOSTS = []
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
+    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split(' ')
 
+    SECURE_SSL_REDIRECT = \
+        os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
+
+    if SECURE_SSL_REDIRECT:
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # NOVA CONFIGURAÇÃO - USA A CONNECTION STRING DO NEON
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
 
 # Application definition
 
@@ -40,10 +72,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'article',
     'comments',
+    "whitenoise.runserver_nostatic",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,14 +109,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -118,7 +144,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.environ.get('DJANGO_STATIC_URL', "/static/")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
