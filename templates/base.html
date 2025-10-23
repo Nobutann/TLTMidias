@@ -67,11 +67,19 @@
         <ul class="nav-list" id="navList">
             <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
             
-            {% for category in categories %}
-                <li>
-                    <a href="{% url 'article:category_page' category_slug=category.slug %}" class="nav-link">{{ category.title }}</a>
-                </li>
-            {% endfor %}
+            <li class="nav-item-dropdown">
+                <a href="#" class="nav-link nav-link-dropdown">
+                    Categorias <i class="bi bi-chevron-down nav-chevron"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    {% for category in categories %}
+                        <li><a href="{% url 'article:category_page' category_slug=category.slug %}" class="dropdown-link">{{ category.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            
+            <li><a href="#" class="nav-link">Acervo</a></li>
+            <li><a href="#" class="nav-link">Colunistas</a></li>
         </ul>
     </div>
 </nav>
