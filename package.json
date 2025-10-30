@@ -1,0 +1,23 @@
+{
+  "name": "tltmidias",
+  "version": "1.0.0",
+  "description": "O **TLT Mídias** é um projeto voltado para aumentar a retenção de usuários no portal online do Jornal do Commercio. O projeto propõe uma repaginação da plataforma, focando na:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nobutann/TLTMidias.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nobutann/TLTMidias/issues"
+  },
+  "homepage": "https://github.com/Nobutann/TLTMidias#readme",
+  "devDependencies": {
+    "cypress": "^15.5.0"
+  }
+}
