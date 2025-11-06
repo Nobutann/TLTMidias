@@ -26,13 +26,11 @@
                                 <path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"/>
                             </svg>
                         </a>
-
                         <a href="#" class="social-icon">
                             <svg viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                                 <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
                             </svg>
                         </a>
-
                         <a href="#" class="social-icon">
                             <img src="{% static 'article/img/instagram_logo_2016.svg.png' %}" alt="Instagram">
                         </a>
@@ -40,6 +38,7 @@
                 </div>
             </div>
         </div>
+
         <div class="header-main">
             <div class="container">
                 <div class="header-content">
@@ -49,10 +48,10 @@
                         </a>
                     </h1>
                     <div class="header-actions">
-                        <form action="#" class="search-form", method="get">
+                        <form action="#" class="search-form" method="get">
                             <input type="text" name="q" placeholder="Buscar notícias..." class="search-input">
                             <button type="submit" class="search-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 48 48">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
                                     <path d="M 20.5 6 C 12.509634 6 6 12.50964 6 20.5 C 6 28.49036 12.509634 35 20.5 35 C 23.956359 35 27.133709 33.779044 29.628906 31.75 L 39.439453 41.560547 A 1.50015 1.50015 0 1 0 41.560547 39.439453 L 31.75 29.628906 C 33.779044 27.133709 35 23.956357 35 20.5 C 35 12.50964 28.490366 6 20.5 6 z M 20.5 9 C 26.869047 9 32 14.130957 32 20.5 C 32 23.602612 30.776198 26.405717 28.791016 28.470703 A 1.50015 1.50015 0 0 0 28.470703 28.791016 C 26.405717 30.776199 23.602614 32 20.5 32 C 14.130953 32 9 26.869043 9 20.5 C 9 14.130957 14.130953 9 20.5 9 z"></path>
                                 </svg>
                             </button>
@@ -62,28 +61,42 @@
                 </div>
             </div>
         </div>
+
         <nav class="main-nav">
-    <div class="container">
-        <ul class="nav-list" id="navList">
-            <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
-            
-            <li class="nav-item-dropdown">
-                <a href="#" class="nav-link nav-link-dropdown">
-                    Categorias <i class="bi bi-chevron-down nav-chevron"></i>
-                </a>
-                <ul class="dropdown-menu">
-                    {% for category in categories %}
-                        <li><a href="{% url 'article:category_page' category_slug=category.slug %}" class="dropdown-link">{{ category.title }}</a></li>
-                    {% endfor %}
+            <div class="container">
+                <ul class="nav-list" id="navList">
+                    <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
+                    <li class="nav-item-dropdown">
+                        <a href="#" class="nav-link nav-link-dropdown">
+                            Categorias <i class="bi bi-chevron-down nav-chevron"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for category in categories %}
+                                <li><a href="{% url 'article:category_page' category_slug=category.slug %}" class="dropdown-link">{{ category.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li><a href="#" class="nav-link">Acervo</a></li>
+                    <li><a href="#" class="nav-link">Colunistas</a></li>
                 </ul>
-            </li>
-            
-            <li><a href="#" class="nav-link">Acervo</a></li>
-            <li><a href="#" class="nav-link">Colunistas</a></li>
-        </ul>
-    </div>
-</nav>
+            </div>
+        </nav>
     </header>
+
+    <div style="text-align: right; margin: 10px 20px;">
+        <button id="showNotifications"
+                style="font-size:16px; background:none; border:none; cursor:pointer;">
+            🔔 Notificações
+        </button>
+    </div>
+
+    <div id="notificationList"
+         style="display:none; position:fixed; top:60px; right:20px; background:#fff;
+                border:2px solid #000; padding:10px; width:300px; z-index:9999;
+                box-shadow:0 4px 10px rgba(0,0,0,0.25);">
+        <p><strong>Notificações</strong></p>
+        <ul id="notifItems" style="list-style:none; padding:0;"></ul>
+    </div>
 
     <main>
         {% block content %}{% endblock %}
@@ -102,13 +115,11 @@
                                 <path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"/>
                             </svg>
                         </a>
-
                         <a href="#" class="social-icon">
                             <svg viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                                 <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
                             </svg>
                         </a>
-
                         <a href="#" class="social-icon">
                             <img src="{% static 'article/img/instagram_logo_2016.svg.png' %}" alt="Instagram">
                         </a>
@@ -128,7 +139,6 @@
             </div>
         </div>
     </footer>
-    
-    <script src="{% static 'article/js/scripts.js' %}"></script>
+  <script src="{% static 'article/js/script.js' %}"></script>
 </body>
 </html>
