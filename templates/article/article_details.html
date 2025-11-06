@@ -142,4 +142,68 @@
         </div>
     </div>
 </section>
+<section class="comments-section">
+    <div class="container">
+        <h2 class="section-title">Comentários ({{ comments.count }})</h2>
+        
+        <div class="comment-form-container">
+            <h3>Deixe seu comentário</h3>
+            <form method="POST" class="comment-form">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" name="comment_submit" class="btn-submit">Enviar Comentário</button>
+            </form>
+        </div>
+
+        <div class="comments-list">
+            {% for comment in comments %}
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="comment-avatar">{{ comment.author|first|upper }}</div>
+                    <div class="comment-info">
+                        <h4 class="comment-author">{{ comment.author }}</h4>
+                        <time class="comment-date">{{ comment.created_at|date:"d/m/Y às H:i" }}</time>
+                    </div>
+                </div>
+                <div class="comment-body">
+                    <p>{{ comment.content }}</p>
+                </div>
+                
+                {% if comment.responses.all %}
+                <div class="responses-list">
+                    {% for response in comment.responses.all %}
+                    <div class="response-item">
+                        <div class="comment-header">
+                            <div class="comment-avatar response-avatar">{{ response.author|first|upper }}</div>
+                            <div class="comment-info">
+                                <h4 class="comment-author">{{ response.author }}</h4>
+                                <time class="comment-date">{{ response.created_at|date:"d/m/Y às H:i" }}</time>
+                            </div>
+                        </div>
+                        <div class="comment-body">
+                            <p>{{ response.content }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <button class="btn-reply" onclick="toggleResponseForm({{ comment.id }})">Responder</button>
+                
+                <div class="response-form-container" id="response-form-{{ comment.id }}" style="display: none;">
+                    <form method="POST" class="comment-form">
+                        {% csrf_token %}
+                        {{ response_form.as_p }}
+                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                        <button type="submit" name="response_submit" class="btn-submit">Enviar Resposta</button>
+                        <button type="button" class="btn-cancel" onclick="toggleResponseForm({{ comment.id }})">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-comments">Ainda não há comentários. Seja o primeiro a comentar!</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}
