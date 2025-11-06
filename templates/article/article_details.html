@@ -159,14 +159,14 @@
             {% for comment in comments %}
             <div class="comment-item">
                 <div class="comment-header">
-                    <div class="comment-avatar">{{ comment.name|first|upper }}</div>
+                    <div class="comment-avatar">{{ comment.author|first|upper }}</div>
                     <div class="comment-info">
-                        <h4 class="comment-author">{{ comment.name }}</h4>
+                        <h4 class="comment-author">{{ comment.author }}</h4>
                         <time class="comment-date">{{ comment.created_at|date:"d/m/Y às H:i" }}</time>
                     </div>
                 </div>
                 <div class="comment-body">
-                    <p>{{ comment.text }}</p>
+                    <p>{{ comment.content }}</p>
                 </div>
                 
                 {% if comment.responses.all %}
@@ -174,14 +174,14 @@
                     {% for response in comment.responses.all %}
                     <div class="response-item">
                         <div class="comment-header">
-                            <div class="comment-avatar response-avatar">{{ response.name|first|upper }}</div>
+                            <div class="comment-avatar response-avatar">{{ response.author|first|upper }}</div>
                             <div class="comment-info">
-                                <h4 class="comment-author">{{ response.name }}</h4>
+                                <h4 class="comment-author">{{ response.author }}</h4>
                                 <time class="comment-date">{{ response.created_at|date:"d/m/Y às H:i" }}</time>
                             </div>
                         </div>
                         <div class="comment-body">
-                            <p>{{ response.text }}</p>
+                            <p>{{ response.content }}</p>
                         </div>
                     </div>
                     {% endfor %}
