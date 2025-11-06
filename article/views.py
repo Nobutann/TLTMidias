@@ -1,33 +1,56 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
+from django.db.models import Q 
+from django.urls import reverse 
+
 from .models import Article, Category
 from .forms import ArticleForms
-from django.core.paginator import Paginator
 from comments.forms import CommentsForm, ResponsesForm
 from comments.models import Comments
 
+
 def homepage(request):
     categories = Category.objects.all()
+    
+    search_query = request.GET.get('q')        
+    search_date = request.GET.get('data')      
+    category_slug = request.GET.get('categoria')
+    
+    articles_list = Article.objects.all().order_by('-published_date')
+    
+    if search_query:
+        articles_list = articles_list.filter(
+            Q(title__icontains=search_query) | Q(content__icontains=search_query)
+        )
 
-    category_slug = request.GET.get('categoria') 
+    if search_date:
+        articles_list = articles_list.filter(published_date__date=search_date)
 
     if category_slug:
-        articles_list = Article.objects.filter(
+        articles_list = articles_list.filter(
             category__slug=category_slug
-        ).order_by('-published_date')
+        )
+
+    if not articles_list.exists():
+        no_results = True
     else:
-        articles_list = Article.objects.all().order_by('-published_date')
+        no_results = False
 
     paginator = Paginator(articles_list, 10)
     page_number = request.GET.get('page')
-    
     articles = paginator.get_page(page_number)
 
     context = {
         'categories': categories,
         'articles': articles,
+        'no_results': no_results,        
+        'search_query': search_query,    
+        'search_date': search_date,
+        'category_slug': category_slug,  
     }
 
     return render(request, 'article/index.html', context)
+
 
 def publish_article(request):
     if request.method == 'POST':
@@ -50,7 +73,7 @@ def edit_article(request, pk):
         form = ArticleForms(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
-            return redirect('artigo', slug=article.slug)
+            return redirect('article:details', pk=article.pk) 
     else:
         form = ArticleForms(instance=article)
 
@@ -66,7 +89,7 @@ def delete_article(request, pk):
 
     if request.method == 'POST':
         article.delete()
-        return redirect('index')
+        return redirect('article:homepage') 
     
     context = {
         'article': article
@@ -115,26 +138,9 @@ def article_details(request, pk):
     return render(request, 'article/article_details.html', context)
 
 def category_page(request, category_slug):
+    get_object_or_404(Category, slug=category_slug) 
     
-    category = get_object_or_404(Category, slug=category_slug)
+    homepage_url = reverse('article:homepage')
+    redirect_url = f'{homepage_url}?categoria={category_slug}'
     
-    
-    categories = Category.objects.all()
-
-    
-    articles_list = Article.objects.filter(
-        category=category
-    ).order_by('-published_date')
-
-    
-    paginator = Paginator(articles_list, 10)
-    page_number = request.GET.get('page')
-    articles = paginator.get_page(page_number)
-
-    context = {
-        'categories': categories,     
-        'articles': articles,         
-        'current_category': category, 
-    }
-
-    return render(request, 'article/index.html', context)
+    return redirect(redirect_url)
