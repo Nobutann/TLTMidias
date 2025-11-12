@@ -20,7 +20,9 @@ def homepage(request):
     
     if search_query:
         articles_list = articles_list.filter(
-            Q(title__icontains=search_query) | Q(content__icontains=search_query)
+            Q(title__icontains=search_query) | 
+            Q(content__icontains=search_query) |
+            Q(category__title__icontains=search_query)
         )
 
     if search_date:
