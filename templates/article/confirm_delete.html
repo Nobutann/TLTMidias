@@ -16,7 +16,7 @@
       <p>Tem certeza que deseja excluir este artigo? Esta ação não pode ser desfeita.</p>
       <div class="actions">
         <button type="submit" class="btn btn-danger">Sim, excluir</button>
-  <a href="{% url 'artigo' article.slug %}" class="btn btn-secondary">Cancelar</a>
+  <a href="{% url 'article:details' article.pk %}" class="btn btn-secondary">Cancelar</a>
       </div>
     </form>
 
