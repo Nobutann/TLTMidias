@@ -49,3 +49,5 @@ Permite que funcionários publiquem, editem e deletem artigos, garantindo que o 
 ## Entregas
 
 [Histórias do usuário](https://docs.google.com/document/d/1B55Cy02mlvmEyRBUyu2h5Y5slspZt34zP3P5U8Sm4WE/edit?usp=sharing)
+
+[Testes automatizados](https://youtu.be/UTVZEfI3OXU)
