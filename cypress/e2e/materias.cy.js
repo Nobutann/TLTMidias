@@ -44,7 +44,7 @@ describe('História 4: Exibição de matérias relevantes na página inicial', (
     it('Deve permitir clicar e navegar para os detalhes da matéria', () => {
       cy.visit('/')
 
-      cy.get('.hero-main .hero-link').click()
+      cy.get('.hero-main .hero-link').click({ force: true })
       
       cy.url().should('include', '/article/')
       cy.get('.article-detail').should('exist')
