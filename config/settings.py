@@ -18,7 +18,7 @@ DEBUG = os.getenv('DEBUG', '1').lower() in ['true', 't', '1']
 
 # Hosts e CSRF
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(' ')
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(' ')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(' ')
 
 # Redirect SSL se configurado
 SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']

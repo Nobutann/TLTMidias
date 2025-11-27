@@ -100,7 +100,10 @@ def delete_article(request, pk):
     return render(request, 'article/confirm_delete.html', context)
 
 def article_details(request, pk):
-    article = get_object_or_404(Article, pk=pk)
+    try:
+        article = Article.objects.get(pk=pk)
+    except Article.DoesNotExist:
+        return render(request, 'article/confirm_delete.html', {'article': None}, status=404)
     categories = Category.objects.all()
     comments = article.comments.all()
 
@@ -140,9 +143,25 @@ def article_details(request, pk):
     return render(request, 'article/article_details.html', context)
 
 def category_page(request, category_slug):
-    get_object_or_404(Category, slug=category_slug) 
-    
-    homepage_url = reverse('article:homepage')
-    redirect_url = f'{homepage_url}?categoria={category_slug}'
-    
-    return redirect(redirect_url)
+    category = get_object_or_404(Category, slug=category_slug)
+    categories = Category.objects.all()
+
+    articles_list = Article.objects.filter(category__slug=category_slug).order_by('-published_date')
+
+    if not articles_list.exists():
+        no_results = True
+    else:
+        no_results = False
+
+    paginator = Paginator(articles_list, 10)
+    page_number = request.GET.get('page')
+    articles = paginator.get_page(page_number)
+
+    context = {
+        'categories': categories,
+        'articles': articles,
+        'no_results': no_results,
+        'category_slug': category_slug,
+    }
+
+    return render(request, 'article/index.html', context)
