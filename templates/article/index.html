@@ -55,6 +55,29 @@
             </div>
         </div>
     </section>
+    {% else %}
+    <section class="hero-section">
+        <div class="hero-grid">
+            <article class="hero-main">
+                <a href="#" class="hero-link">
+                    <div class="hero-content">
+                        <h2 class="hero-title">Nenhuma notícia disponível</h2>
+                        <p class="hero-excerpt">Ainda não há artigos publicados. Volte mais tarde.</p>
+                    </div>
+                </a>
+            </article>
+
+            <div class="hero-sidebar">
+                <article class="hero-secondary">
+                    <a href="#" class="hero-secondary-link">
+                        <div class="hero-secondary-content">
+                            <h3 class="hero-secondary-title">Sem matérias</h3>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
     {% endif %}
 
     <section class="article-section">
