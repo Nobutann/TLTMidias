@@ -318,7 +318,7 @@ img {
 
 
 .hero-section {
-    padding: 3rem 0;
+    padding: 6rem 0 3rem 0;
     background: linear-gradient(to bottom, var(--bg-gray), var(--bg-color));
 }
 
@@ -334,6 +334,8 @@ img {
     overflow: hidden;
     box-shadow: var(--shadow-lg);
     transition: transform 0.3s;
+    min-height: 320px;
+    z-index: 1001;
 }
 
 .hero-main:hover {
@@ -883,25 +885,23 @@ img {
         padding: 1rem 1.5rem;
         border-bottom: 1px solid var(--border-color);
     }
-    /* Reset dropdown for mobile */
     .nav-item-dropdown {
         position: static;
     }
 
     .dropdown-menu {
-        display: block; /* Let it be part of the flow */
+        display: block;
         position: static;
         box-shadow: none;
         min-width: 100%;
         border-top: none;
         border-radius: 0;
-        background-color: #f7f7f7; /* Slightly different BG */
+        background-color: #f7f7f7;
         padding: 0;
-        /* It will be hidden/shown by the parent .nav-list's max-height */
     }
 
     .dropdown-link {
-        padding: 0.8rem 2.5rem; /* Indent mobile sub-items */
+        padding: 0.8rem 2.5rem; 
         font-size: 0.9rem;
         border-bottom: 1px solid var(--border-color);
     }
@@ -912,7 +912,7 @@ img {
     }
 
     .nav-chevron {
-        display: none; /* Hide chevron on mobile */
+        display: none; 
     }
 
     .hero-image {
@@ -1244,7 +1244,6 @@ img {
     color: var(--text-light);
 }
 
-/* Article Sidebar */
 .article-sidebar {
     position: sticky;
     top: 100px;
