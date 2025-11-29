@@ -1,3 +1,7 @@
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from article.models import Article
+from .services import publish_breaking_news
 import json
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_http_methods
@@ -54,3 +58,31 @@ def prefs(request):
         pref.categories = data['categories']
     pref.save()
     return JsonResponse({'enabled': pref.enabled, 'channels': pref.channels, 'categories': pref.categories})
+
+
+def send_breaking_view(request):
+    articles = Article.objects.all().order_by('-published_date')
+
+    if request.method == 'POST':
+        article_id = request.POST.get('article_id')
+        breaking_text = request.POST.get('breaking_text')
+
+        try:
+            article = Article.objects.get(id=article_id)
+        except Article.DoesNotExist:
+            messages.error(request, "Artigo não encontrado.")
+            return redirect("send_breaking")
+
+        
+        article_url = request.build_absolute_uri(f"/article/{article.id}/")
+
+        publish_breaking_news(
+            title=breaking_text,
+            url=article_url,
+            category=article.category
+        )
+
+        messages.success(request, "Breaking News enviada com sucesso!")
+        return redirect("send_breaking")
+
+    return render(request, "notifications/send_breaking.html", {"articles": articles})

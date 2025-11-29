@@ -1883,4 +1883,52 @@ img {
     .comment-date {
         font-size: 0.8rem;
     }
+
+.breaking-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: background 0.3s ease;
+}
+
+
+.page-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+
+:root {
+    --card-bg: #ffffff;
+    --shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+
+.dark-mode {
+    --card-bg: #1e1e1e;
+    --shadow: 0 2px 10px rgba(255,255,255,0.05);
+}
+
+.dark-mode .page-title {
+    color: #f5f5f5;
+}
+
+.dark-mode .form-label {
+    color: #e4e4e4;
+}
+
+.dark-mode .form-control,
+.dark-mode .form-select {
+    background: #2b2b2b;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+.dark-mode .btn-primary {
+    background-color: #006eff;
+    border-color: #006eff;
+}
+
 }
