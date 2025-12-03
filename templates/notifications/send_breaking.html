@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Enviar Breaking News{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+
+    <h2 class="page-title">Enviar Breaking News</h2>
+
+    <div class="card breaking-card">
+        <div class="card-body">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-group mb-3">
+                    <label for="article_id" class="form-label">Selecione o artigo</label>
+                    <select name="article_id" class="form-select" required>
+                        {% for article in articles %}
+                            <option value="{{ article.id }}">{{ article.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="breaking_text" class="form-label">Mensagem da Breaking News</label>
+                    <textarea name="breaking_text" class="form-control" rows="4" placeholder="Digite a breaking personalizada..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar Breaking</button>
+
+            </form>
+
+            {% if messages %}
+                <div class="alert-area mt-4">
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
