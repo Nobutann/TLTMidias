@@ -1,209 +1,134 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ article.title }}{% endblock %}
+{% block title %}{{ article.title }} - JC Jornal do Commercio{% endblock %}
 
 {% block content %}
-<article class="article-detail">
-    <div class="article-detail-container">
-        <nav class="breadcrumb">
-            <a href="{% url 'article:homepage' %}">Home</a>
-            <span class="breadcrumb-separator">></span>
-            {% if article.category %}
-                <a href="#">{{ article.category.title }}</a>
-                <span class="breadcrumb-separator">></span>
-            {% endif %}
-            <span class="breadcrumb-current">{{ article.title|truncatewords:5 }}</span>
+<article class="article-detail-wrapper">
+    <div class="container">
+        <nav class="breadcrumb-nav">
+            <a href="{% url 'article:homepage' %}" class="breadcrumb-link">← Home</a>
         </nav>
 
-        <header class="article-header">
-            {% if article.category %}
-            <a href="#" class="article-category-badge">
-                {{ article.category.title }}
-            </a>
-            {% endif %}
-
-            <h1 class="article-detail-title">{{ article.title }}</h1>
-
-            <div class="article-detail-meta">
-                <div class="meta-left">
-                    <span class="meta-author">Por {{ article.author }}</span>
-                    <span class="meta-separator">-</span>
-                    <time class="meta-date" datetime="{{ article.published_date|date:'Y-m-d' }}">
-                        {{ article.published_date|date:"d/m/Y \à\s H:i" }}
-                    </time>
-                </div>
-                <div class="meta-share">
-                    <button class="share-btn" title="Compartilhar">
-                        <span>🔗</span> Compartilhar
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        {% if article.image %}
-        <figure class="article-featured-image">
-            <img src="{{ article.image.url }}" alt="{{ article.title }}">
-            <figcaption class="image-caption">{{ article.title }}</figcaption>
-        </figure>
-        {% endif %}
-
-        <div class="article-body">
-            <div class="article-content-main">
-                {{ article.content|linebreaks }}
-            </div>
-
-            <aside class="article-sidebar">
-                <div class="author-box">
-                    <div class="author-avatar">
-                        <span>{{ article.author|first }}</span>
+        <div class="article-detail-layout">
+            <main class="article-main-column">
+                <header class="article-header">
+                    <span class="article-badge">{{ article.category.title }}</span>
+                    <h1 class="article-main-title">{{ article.title }}</h1>
+                    <div class="article-meta-info">
+                        <span class="meta-author"><strong class="por-color">Por</strong> {{ article.author|default:"Redação" }}</span>
+                        <time class="meta-date">{{ article.published_date|date:"d \d\e F \d\e Y" }}</time>
                     </div>
-                    <div class="author-info">
-                        <h3>{{ article.author }}</h3>
-                        <p class="author-role">Jornalista</p>
-                    </div>
+                </header>
+
+                {% if article.image %}
+                <figure class="article-featured-image">
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                </figure>
+                {% endif %}
+
+                <div class="article-body-content">
+                    {{ article.content|safe }}
                 </div>
 
-                <div class="share-box">
-                    <h3>Compartilhar</h3>
-                    <div class="header-social">
-                        <a href="#" class="social-icon">
-                            <svg viewBox="0 0 48 45" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"/>
-                                <path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"/>
-                            </svg>
-                        </a>
+                <section class="comments-wrapper">
+                    <h2 class="section-title">Comentários ({{ comments.count }})</h2>
 
-                        <a href="#" class="social-icon">
-                            <svg viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                                <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
-                            </svg>
-                        </a>
-
-                        <a href="#" class="social-icon">
-                            <img src="{% static 'article/img/instagram_logo_2016.svg.png' %}" alt="Instagram">
-                        </a>
-                    </div>
-
-                    <div class="sidebar-ad">
-                        <span class="ad-label">Publicidade</span>
-                        <div class="ad-placeholder">
-                            <p>Espaço para <br>Anúncio</p>
+                    <form method="post" class="comment-form-box">
+                        {% csrf_token %}
+                        <input type="hidden" name="comment_submit" value="1">
+                        
+                        <div class="form-field">
+                            <label for="id_author" class="form-label">Nome</label>
+                            {{ comment_form.author }}
                         </div>
+                        
+                        <div class="form-field">
+                            <label for="id_content" class="form-label">Comentário</label>
+                            {{ comment_form.content }}
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Enviar Comentário</button>
+                    </form>
+
+                    <div class="comments-thread">
+                        {% for comment in comments %}
+                        <article class="comment-item">
+                            <div class="comment-content-wrapper">
+                                <div class="comment-header-row">
+                                    <strong class="commenter-name">{{ comment.author }}</strong>
+                                    <time class="comment-timestamp">{{ comment.created_at|date:"d/m/Y às H:i" }}</time>
+                                </div>
+                                <p class="comment-body-text">{{ comment.content }}</p>
+                                
+                                <button type="button" class="reply-trigger-btn" onclick="toggleReplyForm({{ comment.id }})">
+                                    Responder
+                                </button>
+                            </div>
+
+                            <form method="post" class="reply-form-box" id="reply-form-{{ comment.id }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="response_submit" value="1">
+                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                
+                                <div class="form-field">
+                                    <label for="id_author_reply_{{ comment.id }}" class="form-label">Nome</label>
+                                    <input type="text" name="author" id="id_author_reply_{{ comment.id }}" class="form-control" placeholder="Seu nome..." required>
+                                </div>
+                                
+                                <div class="form-field">
+                                    <label for="id_content_reply_{{ comment.id }}" class="form-label">Resposta</label>
+                                    <textarea name="content" id="id_content_reply_{{ comment.id }}" class="form-control" rows="3" placeholder="Escreva sua resposta..." required></textarea>
+                                </div>
+                                
+                                <div class="reply-actions">
+                                    <button type="submit" class="btn-primary btn-small">Enviar</button>
+                                    <button type="button" class="btn-cancel" onclick="toggleReplyForm({{ comment.id }})">Cancelar</button>
+                                </div>
+                            </form>
+
+                            {% if comment.responses.all %}
+                            <div class="replies-thread">
+                                {% for response in comment.responses.all %}
+                                <article class="reply-item">
+                                    <div class="comment-header-row">
+                                        <strong class="commenter-name">{{ response.author }}</strong>
+                                        <time class="comment-timestamp">{{ response.created_at|date:"d/m/Y às H:i" }}</time>
+                                    </div>
+                                    <p class="comment-body-text">{{ response.content }}</p>
+                                </article>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </article>
+                        {% endfor %}
                     </div>
+                </section>
+            </main>
+
+            <aside class="article-sidebar-column">
+                <div class="sidebar-sticky">
+                    {% if related_articles %}
+                    <section class="related-box">
+                        <h3 class="sidebar-heading">Leia também</h3>
+                        <div class="related-articles-list">
+                            {% for related in related_articles %}
+                            <a href="{% url 'article:details' related.pk %}" class="related-card">
+                                {% if related.image %}
+                                <img src="{{ related.image.url }}" alt="{{ related.title }}" class="related-thumbnail">
+                                {% endif %}
+                                <div class="related-text">
+                                    <span class="related-category">{{ related.category.title }}</span>
+                                    <h4 class="related-title">{{ related.title }}</h4>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </section>
+                    {% endif %}
                 </div>
             </aside>
         </div>
-
-        {% if article.category or article.subcategory %}
-        <div class="article-tags">
-            <strong>Tags:</strong>
-            {% if article.category %}
-                <a href="#" class="tag">
-                    {{ article.category.title }}
-                </a>
-            {% endif %}
-            {% if article.subcategory %}
-                <a href="#" class="tag">
-                    {{ article.subcategory.title }}
-                </a>
-            {% endif %}
-        </div>
-        {% endif %}
     </div>
 </article>
-
-<section class="related-articles">
-    <div class="container">
-        <h2 class="section-title">Leia Também</h2>
-        <div class="related-grid">
-            {% for related in related_articles %}
-            <article class="related-card">
-                <a href="{% url 'article:details' related.pk %}" class="related-link">
-                    {% if related.image %}
-                    <div class="related-image">
-                        <img src="{{ related.image.url }}" alt="{{ related.title }}">
-                    </div>
-                    {% else %}
-                    <div class="related-image related-image-placeholder">
-                        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="120" height="120" fill="#EFF1F3"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M33.2503 38.4816C33.2603 37.0472 34.4199 35.8864 35.8543 35.875H83.1463C84.5848 35.875 85.7503 37.0431 85.7503 38.4816V80.5184C85.7403 81.9528 84.5807 83.1136 83.1463 83.125H35.8543C34.4158 83.1236 33.2503 81.957 33.2503 80.5184V38.4816ZM80.5006 41.1251H38.5006V77.8751L62.8921 53.4783C63.9172 52.4536 65.5788 52.4536 66.6039 53.4783L80.5006 67.4013V41.1251ZM43.75 51.6249C43.75 54.5244 46.1005 56.8749 49 56.8749C51.8995 56.8749 54.25 54.5244 54.25 51.6249C54.25 48.7254 51.8995 46.3749 49 46.3749C46.1005 46.3749 43.75 48.7254 43.75 51.6249Z" fill="#687787"></path> </g></svg>
-                    </div>
-                    {% endif %}
-                    <div class="related-content">
-                        {% if related.category %}
-                        <span class="related-category">{{ related.category.title }}</span>
-                        {% endif %}
-                        <h3 class="related-title">{{ related.title }}</h3>
-                        <time class="related-date">{{ related.published_date|date:"d/m/Y" }}</time>
-                    </div>
-                </a>
-            </article>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-<section class="comments-section">
-    <div class="container">
-        <h2 class="section-title">Comentários ({{ comments.count }})</h2>
-        
-        <div class="comment-form-container">
-            <h3>Deixe seu comentário</h3>
-            <form method="POST" class="comment-form">
-                {% csrf_token %}
-                {{ comment_form.as_p }}
-                <button type="submit" name="comment_submit" class="btn-submit">Enviar Comentário</button>
-            </form>
-        </div>
-
-        <div class="comments-list">
-            {% for comment in comments %}
-            <div class="comment-item">
-                <div class="comment-header">
-                    <div class="comment-avatar">{{ comment.author|first|upper }}</div>
-                    <div class="comment-info">
-                        <h4 class="comment-author">{{ comment.author }}</h4>
-                        <time class="comment-date">{{ comment.created_at|date:"d/m/Y às H:i" }}</time>
-                    </div>
-                </div>
-                <div class="comment-body">
-                    <p>{{ comment.content }}</p>
-                </div>
-                
-                {% if comment.responses.all %}
-                <div class="responses-list">
-                    {% for response in comment.responses.all %}
-                    <div class="response-item">
-                        <div class="comment-header">
-                            <div class="comment-avatar response-avatar">{{ response.author|first|upper }}</div>
-                            <div class="comment-info">
-                                <h4 class="comment-author">{{ response.author }}</h4>
-                                <time class="comment-date">{{ response.created_at|date:"d/m/Y às H:i" }}</time>
-                            </div>
-                        </div>
-                        <div class="comment-body">
-                            <p>{{ response.content }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
-                <button class="btn-reply" onclick="toggleResponseForm({{ comment.id }})">Responder</button>
-                
-                <div class="response-form-container" id="response-form-{{ comment.id }}" style="display: none;">
-                    <form method="POST" class="comment-form">
-                        {% csrf_token %}
-                        {{ response_form.as_p }}
-                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                        <button type="submit" name="response_submit" class="btn-submit">Enviar Resposta</button>
-                        <button type="button" class="btn-cancel" onclick="toggleResponseForm({{ comment.id }})">Cancelar</button>
-                    </form>
-                </div>
-            </div>
-            {% empty %}
-            <p class="no-comments">Ainda não há comentários. Seja o primeiro a comentar!</p>
-            {% endfor %}
-        </div>
-    </div>
-</section>
 {% endblock %}

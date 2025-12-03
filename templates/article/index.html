@@ -5,175 +5,100 @@
 
 {% block content %}
 <div class="container">
-
-    <div class="section-header" style="margin-bottom: 20px;">
-        <h2 class="section-title">Últimas Notícias</h2>
-        <a href="#" class="view-all">Ver todas</a>
+    <div class="filters-bar">
+        <form method="get" action="{% url 'article:homepage' %}" class="filter-form">
+            <label for="dateFilter" class="filter-label">
+                <svg class="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <input 
+                    type="date" 
+                    id="dateFilter" 
+                    name="data" 
+                    class="date-input"
+                    value="{{ search_date|default:'' }}"
+                    onchange="this.form.submit()"
+                >
+            </label>
+            {% if search_query %}
+            <input type="hidden" name="q" value="{{ search_query }}">
+            {% endif %}
+            {% if category_slug %}
+            <input type="hidden" name="categoria" value="{{ category_slug }}">
+            {% endif %}
+        </form>
+        
+        {% if search_query or search_date or category_slug %}
+        <a href="{% url 'article:homepage' %}" class="clear-filters">
+            Limpar filtros
+        </a>
+        {% endif %}
     </div>
 
-    {% if articles %}
-    <section class="hero-section">
-        <div class="hero-grid">
-            {% with articles.0 as featured %}
-            <article class="hero-main">
-                <a href="{% url 'article:details' featured.pk %}" class="hero-link">
-                    {% if featured.image %}
-                    <div class="hero-image">
-                        <img src="{{ featured.image.url }}" alt="{{ featured.title }}">
-                        {% if featured.category %}
-                        <span class="category-overlay">{{ featured.category.title }}</span>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-                    <div class="hero-content">
-                        <h2 class="hero-title">{{featured.title}}</h2>
-                        <p class="hero-excerpt">{{ featured.content|truncatewords:35 }}</p>
-                        <div class="article-meta">
-                            <span class="author">{{ featured.author }}</span>
-                            <span class="date">{{ featured.published_date|date:"d/m/Y H:i" }}</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-            {% endwith %}
-
-            <div class="hero-sidebar">
-                {% for article in articles|slice:"1:4" %}
-                <article class="hero-secondary">
-                    <a href="{% url 'article:details' article.pk %}" class="hero-secondary-link">
-                        {% if article.image %}
-                        <div class="hero-secondary-image">
-                            <img src="{{ article.image.url }}" alt="{{ article.title }}">
-                        </div>
-                        {% endif %}
-                        <div class="hero-secondary-content">
-                            {% if article.category %}
-                            <span class="category-tag-small">{{ article.category.title }}</span>
-                            {% endif %}
-                            <h3 class="hero-secondary-title">{{ article.title }}</h3>
-                            <div class="article-meta small">
-                                <span class="date">{{ article.published_date|date:"d/m/Y" }}</span>
-                            </div>
-                        </div>
-                    </a>
-                </article>
-                {% endfor %}
-            </div>
+    <div class="articles-grid">
+        {% if no_results %}
+        <div class="no-results">
+            <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4"/>
+                <path d="M12 16h.01"/>
+            </svg>
+            <h2>Nenhuma notícia disponível</h2>
+            <p>No momento não há notícias publicadas. Por favor, volte mais tarde.</p>
         </div>
-    </section>
-    {% else %}
-    <section class="hero-section">
-        <div class="hero-grid">
-            <article class="hero-main">
-                <a href="#" class="hero-link">
-                    <div class="hero-content">
-                        <h2 class="hero-title">Nenhuma notícia disponível</h2>
-                        <p class="hero-excerpt">Ainda não há artigos publicados. Volte mais tarde.</p>
-                    </div>
-                </a>
-            </article>
-
-            <div class="hero-sidebar">
-                <article class="hero-secondary">
-                    <a href="#" class="hero-secondary-link">
-                        <div class="hero-secondary-content">
-                            <h3 class="hero-secondary-title">Sem matérias</h3>
-                        </div>
-                    </a>
-                </article>
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
-    <section class="article-section">
-        <div class="article-grid">
+        {% else %}
             {% for article in articles %}
-                {% if forloop.counter > 4 %}
-                <article class="article-card">
-                    <a href="{% url 'article:details' article.pk %}" class="article-link">
-                        {% if article.image %}
-                        <div class="article-image">
-                            <img src="{{ article.image.url }}" alt="{{ article.title }}">
-                            {% if article.category %}
-                            <span class="category-badge">{{article.category.title}}</span>
-                            {% endif %}
-                        </div>
-                        {% else %}
-                        <div class="article-image article-image-placeholder">
-                            <span>📰</span>
-                        </div>
-                        {% endif %}
-
-                        <div class="article-content">
-                            <h3 class="article-title">{{ article.title }}</h3>
-
-                            <p class="article-excerpt">{{ article.content|truncatewords:20 }}</p>
-
-                            <div class="article-meta">
-                                <span class="author">{{ article.author }}</span>
-                                <span class="date">{{ article.published_date|date:"d/m/Y" }}</span>
-                            </div>
-                        </div>
-                    </a>
-                </article>
+            <article class="article-card {% if forloop.first and articles.number == 1 %}featured{% endif %}">
+                {% if article.image %}
+                <img src="{{ article.image.url }}" alt="{{ article.title }}" class="article-image">
                 {% endif %}
-            {% empty %}
-                <div class="article-placeholder-grid">
-                    <article class="article-card">
-                        <a href="/article/0/" class="article-link">
-                            <div class="article-image article-image-placeholder">
-                                <span>📰</span>
-                            </div>
-                            <div class="article-content">
-                                <h3 class="article-title">Nenhuma notícia disponível</h3>
-                                <p class="article-excerpt">Ainda não há artigos publicados.</p>
-                            </div>
-                        </a>
-                    </article>
-
-                    <article class="article-card">
-                        <a href="/article/0/" class="article-link">
-                            <div class="article-image article-image-placeholder">
-                                <span>📰</span>
-                            </div>
-                            <div class="article-content">
-                                <h3 class="article-title">Nenhuma notícia disponível</h3>
-                                <p class="article-excerpt">Volte mais tarde para ver novidades.</p>
-                            </div>
-                        </a>
-                    </article>
-
-                    <article class="article-card">
-                        <a href="/article/0/" class="article-link">
-                            <div class="article-image article-image-placeholder">
-                                <span>📰</span>
-                            </div>
-                            <div class="article-content">
-                                <h3 class="article-title">Nenhuma notícia disponível</h3>
-                                <p class="article-excerpt">Estamos preparando conteúdo para você.</p>
-                            </div>
-                        </a>
-                    </article>
+                <div class="article-content">
+                    <span class="article-category">{{ article.category.title }}</span>
+                    <h2 class="article-title">
+                        <a href="{% url 'article:details' article.pk %}">{{ article.title }}</a>
+                    </h2>
+                    <p class="article-excerpt">{{ article.content|truncatewords:30|striptags }}</p>
                 </div>
+            </article>
             {% endfor %}
-        </div>
-    </section>
+        {% endif %}
+    </div>
 
-    {% if articles.has_other_pages %}
+    {% if articles.paginator.num_pages > 1 %}
     <div class="pagination">
         {% if articles.has_previous %}
-            <a href="?page=1" class="pagination-link">Primeira</a>
-            <a href="?page{{ articles.previous_page_number }}" class="pagination-link">Anterior</a>
+        <a href="?page={{ articles.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if search_date %}&data={{ search_date }}{% endif %}{% if category_slug %}&categoria={{ category_slug }}{% endif %}" 
+           class="pagination-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </a>
+        {% else %}
+        <button class="pagination-btn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
         {% endif %}
 
-        <span class="pagination-current">
-            Página {{ articles.number }} de {{ articles.paginator.num_pages }}
-        </span>
+        <span class="pagination-info">Página {{ articles.number }} de {{ articles.paginator.num_pages }}</span>
 
         {% if articles.has_next %}
-            <a href="?page{{ articles.next_page_number }}" class="pagination-link">Próxima</a>
-            <a href="?page{{ articles.paginator.num_pages }}" class="pagination-link">Última</a>
+        <a href="?page={{ articles.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if search_date %}&data={{ search_date }}{% endif %}{% if category_slug %}&categoria={{ category_slug }}{% endif %}" 
+           class="pagination-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </a>
+        {% else %}
+        <button class="pagination-btn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
         {% endif %}
     </div>
     {% endif %}
