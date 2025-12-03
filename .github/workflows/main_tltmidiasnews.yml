@@ -52,10 +52,83 @@ jobs:
       # 1. Remove the SCM_DO_BUILD_DURING_DEPLOYMENT app setting from your Azure App Service Environment variables.
       # 2. Refer to sample workflows for alternative deployment strategies: https://github.com/Azure/actions-workflow-samples/tree/master/AppService
       
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python version
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Python dependencies
+        run: |
+          python -m venv antenv
+          source antenv/bin/activate
+          pip install -r requirements.txt
+      
+      - name: Run Django migrations and setup
+        run: |
+          source antenv/bin/activate
+          python manage.py migrate --noinput
+          python manage.py collectstatic --noinput --clear
+        env:
+          TARGET_ENV: Dev
+      
+      - name: Start Django application in background
+        run: |
+          source antenv/bin/activate
+          nohup python manage.py runserver 0.0.0.0:8000 > django.log 2>&1 &
+          echo $! > django.pid
+          
+          # Aguarda até o servidor responder
+          for i in {1..30}; do
+            if curl -s http://localhost:8000 > /dev/null 2>&1; then
+              echo "Django está respondendo!"
+              break
+            fi
+            echo "Aguardando Django iniciar... ($i/30)"
+            sleep 2
+          done
+        env:
+          TARGET_ENV: Dev
+      
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: firefox
+          config: baseUrl=http://localhost:8000,defaultCommandTimeout=10000,requestTimeout=15000,responseTimeout=15000
+          config-file: cypress.config.js
+      
+      - name: Upload Cypress screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+      
+      - name: Upload Django logs on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: django-logs
+          path: django.log
+          if-no-files-found: ignore
+      
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          if-no-files-found: ignore
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout

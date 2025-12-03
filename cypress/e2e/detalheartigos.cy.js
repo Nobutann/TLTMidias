@@ -17,11 +17,15 @@ describe('História 6: Acesso a Notícia', () => {
     cy.wait(500)
 
     cy.get('body').then(($body) => {
-      if ($body.text().includes('Não foi possível acessar esse artigo')) {
+      const text = $body.text()
+      if (text.includes('Não foi possível acessar esse artigo')) {
         cy.contains('Não foi possível acessar esse artigo').should('exist')
+      } else if (text.includes('Artigo não encontrado')) {
+        cy.contains('Artigo não encontrado').should('exist')
+      } else if (text.includes('404')) {
+        cy.get('h1, .error-title').should('contain.text', '404')
       } else {
-        cy.get('h1, .error-title').should('exist')
-        cy.get('body').should('contain.text', '404')
+        throw new Error('Mensagem de erro esperada não encontrada na página 404')
       }
     })
   })
