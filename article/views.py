@@ -53,15 +53,15 @@ def homepage(request):
 
     return render(request, 'article/index.html', context)
 
-def article_details(request, pk):
+def article_details(request, slug):
     try:
-        article = Article.objects.get(pk=pk)
+        article = Article.objects.get(slug=slug)
     except Article.DoesNotExist:
         return render(request, 'article/confirm_delete.html', {'article': None}, status=404)
     categories = Category.objects.all()
     comments = article.comments.all()
 
-    related_articles = Article.objects.filter(category=article.category).exclude(pk=article.pk).order_by('-published_date')[:4]
+    related_articles = Article.objects.filter(category=article.category).exclude(slug=article.slug).order_by('-published_date')[:4]
 
     if request.method == 'POST':
         if 'comment_submit' in request.POST:
@@ -71,7 +71,7 @@ def article_details(request, pk):
                 new_comment.article = article
                 new_comment.save()
                 
-                return redirect('article:details', pk=pk)
+                return redirect('article:details', slug=slug)
         elif 'response_submit' in request.POST:
             response_form = ResponsesForm(request.POST)
             if response_form.is_valid():
@@ -80,7 +80,7 @@ def article_details(request, pk):
                 new_response = response_form.save(commit=False)
                 new_response.comment = comment
                 new_response.save()
-                return redirect('article:details', pk=pk)
+                return redirect('article:details', slug=slug)
     else:
         comment_form = CommentsForm()
         response_form = ResponsesForm()

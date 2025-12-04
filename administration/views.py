@@ -42,13 +42,13 @@ def publish_article(request):
 
     return render(request, 'dashboard/publish.html', context)
 
-def edit_article(request, pk):
-    article = get_object_or_404(Article, pk=pk)
+def edit_article(request, slug):
+    article = get_object_or_404(Article, slug=slug)
     if request.method == 'POST':
         form = ArticleForms(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
-            return redirect('article:details', pk=article.pk) 
+            return redirect('article:details', slug=article.slug) 
     else:
         form = ArticleForms(instance=article)
 
@@ -59,8 +59,8 @@ def edit_article(request, pk):
 
     return render(request, 'dashboard/edit.html', context)
 
-def delete_article(request, pk):
-    article = get_object_or_404(Article, pk=pk)
+def delete_article(request, slug):
+    article = get_object_or_404(Article, slug=slug)
 
     if request.method == 'POST':
         article.delete()

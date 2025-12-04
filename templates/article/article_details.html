@@ -16,7 +16,7 @@
                     <span class="article-badge">{{ article.category.title }}</span>
                     <h1 class="article-main-title">{{ article.title }}</h1>
                     <div class="article-meta-info">
-                        <span class="meta-author">Por {% if article.author %}{{ article.author.name }}{% else %}Redação{% endif %}</span>
+                        <span class="meta-author"><strong class="por-color">Por</strong> {% if article.author %}{{ article.author.name }}{% else %}Redação{% endif %}</span>
                         <time class="meta-date">{{ article.published_date|date:"d \d\e F \d\e Y" }}</time>
                     </div>
                 </header>
@@ -113,7 +113,7 @@
                         <h3 class="sidebar-heading">Leia também</h3>
                         <div class="related-articles-list">
                             {% for related in related_articles %}
-                            <a href="{% url 'article:details' related.pk %}" class="related-card">
+                            <a href="{% url 'article:details' related.slug %}" class="related-card">
                                 {% if related.image %}
                                 <img src="{{ related.image.url }}" alt="{{ related.title }}" class="related-thumbnail">
                                 {% endif %}

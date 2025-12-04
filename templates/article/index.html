@@ -58,7 +58,7 @@
                 <div class="article-content">
                     <span class="article-category">{{ article.category.title }}</span>
                     <h2 class="article-title">
-                        <a href="{% url 'article:details' article.pk %}">{{ article.title }}</a>
+                        <a href="{% url 'article:details' article.slug %}">{{ article.title }}</a>
                     </h2>
                     <p class="article-excerpt">{{ article.content|truncatewords:30|striptags }}</p>
                 </div>
