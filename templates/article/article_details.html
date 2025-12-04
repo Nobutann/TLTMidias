@@ -16,7 +16,7 @@
                     <span class="article-badge">{{ article.category.title }}</span>
                     <h1 class="article-main-title">{{ article.title }}</h1>
                     <div class="article-meta-info">
-                        <span class="meta-author"><strong class="por-color">Por</strong> {{ article.author|default:"Redação" }}</span>
+                        <span class="meta-author">Por {% if article.author %}{{ article.author.name }}{% else %}Redação{% endif %}</span>
                         <time class="meta-date">{{ article.published_date|date:"d \d\e F \d\e Y" }}</time>
                     </div>
                 </header>

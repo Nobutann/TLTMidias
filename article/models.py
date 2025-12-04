@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import SlugField
+from administration.models import Columnist
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
@@ -16,7 +17,7 @@ class Article(models.Model):
     
     subcategory = models.ForeignKey('Subcategory', on_delete=models.SET_NULL, null=True, blank=True, related_name='articles') 
     published_date = models.DateTimeField(auto_now_add=True)
-    author = models.CharField(max_length=100)
+    author = models.ForeignKey(Columnist, on_delete=models.SET_NULL, null=True, related_name='articles')
     slug = models.SlugField(max_length=200, unique=True, null=True)
 
     image = models.ImageField(upload_to='articles/', blank=True, null=True)

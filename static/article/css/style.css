@@ -1096,3 +1096,172 @@ body {
         font-size: 14px;
     }
 }
+
+.columnists-hero {
+    background: linear-gradient(135deg, var(--jc-red) 0%, #b01018 100%);
+    padding: 60px 0;
+    text-align: center;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.columnists-hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.columnists-hero p {
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+.columnists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.columnist-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: block;
+}
+
+.columnist-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.columnist-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background-color: var(--background);
+    overflow: hidden;
+}
+
+.columnist-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.columnist-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.columnist-initials {
+    font-size: 64px;
+    font-weight: 700;
+    color: white;
+}
+
+.columnist-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background-color: var(--jc-red);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.columnist-info {
+    padding: 24px;
+}
+
+.columnist-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.columnist-bio {
+    font-size: 14px;
+    color: var(--text-medium);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.columnist-articles-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.columnist-articles-count svg {
+    width: 16px;
+    height: 16px;
+}
+
+.no-columnists {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.no-columnists-icon {
+    width: 80px;
+    height: 80px;
+    color: var(--text-light);
+    margin: 0 auto 24px;
+}
+
+.no-columnists h2 {
+    font-size: 28px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.no-columnists p {
+    font-size: 16px;
+    color: var(--text-medium);
+}
+
+@media (max-width: 768px) {
+    .columnists-hero h1 {
+        font-size: 32px;
+    }
+    
+    .columnists-hero p {
+        font-size: 16px;
+    }
+    
+    .columnists-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+}

@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q 
 from django.urls import reverse 
 
-from .models import Article, Category
+from .models import Article, Category, Columnist
 from .forms import ArticleForms
 from comments.forms import CommentsForm, ResponsesForm
 from comments.models import Comments
@@ -52,52 +52,6 @@ def homepage(request):
     }
 
     return render(request, 'article/index.html', context)
-
-
-def publish_article(request):
-    if request.method == 'POST':
-        form = ArticleForms(request.POST, request.FILES)
-        if form.is_valid():
-            article = form.save()
-            return redirect('article:homepage')
-    else:
-        form = ArticleForms()
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'article/publish.html', context)
-
-def edit_article(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == 'POST':
-        form = ArticleForms(request.POST, request.FILES, instance=article)
-        if form.is_valid():
-            form.save()
-            return redirect('article:details', pk=article.pk) 
-    else:
-        form = ArticleForms(instance=article)
-
-    context = {
-        'form': form,
-        'article': article
-    }
-
-    return render(request, 'article/edit.html', context)
-
-def delete_article(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-
-    if request.method == 'POST':
-        article.delete()
-        return redirect('article:homepage') 
-    
-    context = {
-        'article': article
-    }
-
-    return render(request, 'article/confirm_delete.html', context)
 
 def article_details(request, pk):
     try:

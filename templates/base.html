@@ -72,7 +72,7 @@
                             {% endfor %}
                         </ul>
                     </li>
-                    <li class="nav-item"><a href="#" class="nav-link">Colunistas</a></li>
+                    <li class="nav-item"><a href="{% url 'administration:columnists_page' %}" class="nav-link">Colunistas</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Acervo</a></li>
                 </ul>
             </nav>
@@ -100,6 +100,20 @@
                     </a>
                 </li>
                 {% endfor %}
+            </ul>
+            
+            <h3 style="margin-top: 24px;">Menu</h3>
+            <ul class="mobile-category-list">
+                <li>
+                    <a href="{% url 'administration:columnists_page' %}" class="category-link">
+                        Colunistas
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="category-link">
+                        Acervo
+                    </a>
+                </li>
             </ul>
         </nav>
     </aside>
