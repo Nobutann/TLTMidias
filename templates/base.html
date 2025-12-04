@@ -29,7 +29,7 @@
 
                 <div class="logo">
                     <a href="{% url 'article:homepage' %}">
-                        <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio">
+                        <img src="{% static 'article/img/jc_novo.png' %}" alt="Jornal do Commercio">
                     </a>
                 </div>
 
@@ -65,7 +65,7 @@
                         <ul class="dropdown-menu">
                             {% for category in categories %}
                             <li>
-                                <a href="?categoria={{ category.slug }}" class="dropdown-link">
+                                <a href="{% url 'article:homepage' %}?categoria={{ category.slug }}" class="dropdown-link">
                                     {{ category.title }}
                                 </a>
                             </li>
@@ -94,7 +94,7 @@
             <ul class="mobile-category-list">
                 {% for category in categories %}
                 <li>
-                    <a href="?categoria={{ category.slug }}" 
+                    <a href="{% url 'article:homepage' %}?categoria={{ category.slug }}" 
                        class="category-link {% if category_slug == category.slug %}active{% endif %}">
                         {{ category.title }}
                     </a>
