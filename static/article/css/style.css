@@ -660,7 +660,7 @@ body {
 .article-main-title {
     font-size: 36px;
     line-height: 1.2;
-    color: var(--text-dark);
+    color: var(--jc-red);
     margin-bottom: 20px;
     font-weight: 700;
 }

@@ -1,31 +1,48 @@
-describe('Fluxo completo de artigo', () => {
-  it('Cria, visualiza, edita e deleta um artigo', () => {
-    cy.visit('/publish/')
-    cy.get('#publish-form #id_title').type('Artigo de Teste')
-    cy.get('#publish-form #id_content').type('Conteúdo do artigo de teste.')
-    cy.get('#publish-form #id_author').type('Autor Teste')
-    cy.get('#publish-form button[type="submit"]').first().click()
+describe('CRUD Artigos', () => {
 
-    cy.get('.hero-main .hero-link').first().should('exist').invoke('attr', 'href').then((href) => {
-      const m = href.match(/\/article\/(\d+)\//)
-      const id = m ? m[1] : null
-      expect(id).to.match(/\d+/)
+  it('Publica, edita e deleta um artigo', () => {
 
-      cy.visit(`/article/${id}/`)
-      cy.contains('Artigo de Teste').should('exist')
+    const originalTitle = `Artigo Cypress ${Date.now()}`
+    const updatedTitle = `Artigo Editado Cypress ${Date.now()}`
 
-      cy.visit(`/edit/${id}/`)
-      cy.get('#id_title').clear().type('Artigo Editado')
-      cy.get('#edit-form button[type="submit"]').first().click()
+    cy.visit('/dashboard/publish/')
 
-      cy.visit(`/article/${id}/`)
-      cy.contains('Artigo Editado').should('exist')
+    cy.get('#id_author').select(1)
+    cy.get('#id_category').select(1)
 
-      cy.visit(`/delete/${id}/`)
-      cy.get('#delete-form button[type="submit"]').first().click()
+    cy.get('#id_title').clear().type(originalTitle)
+    cy.get('#id_content').clear().type('Conteúdo criado pelo Cypress.')
 
-      cy.visit(`/article/${id}/`, { failOnStatusCode: false })
-      cy.contains('Artigo não encontrado').should('exist')
-    })
+    cy.get('button[type="submit"]').click()
+
+    cy.visit('/dashboard/manage/')
+
+    cy.contains('.article-card-title', originalTitle, { timeout: 10000 })
+      .should('exist')
+      .parents('.article-card')
+      .within(() => {
+        cy.contains('a', 'Editar').click()
+      })
+
+    cy.get('#id_title').clear().type(updatedTitle)
+    cy.get('#id_content').clear().type('Conteúdo editado pelo Cypress.')
+
+    cy.get('button[type="submit"]').click()
+
+    cy.visit('/dashboard/manage/')
+
+    cy.contains('.article-card-title', updatedTitle, { timeout: 10000 })
+      .should('exist')
+      .parents('.article-card')
+      .within(() => {
+        cy.contains('a', 'Excluir').click()
+      })
+
+    cy.url().should('include', '/dashboard/delete/')
+    cy.get('button[type="submit"]').click()
+
+    cy.visit('/dashboard/manage/')
+    cy.contains('.article-card-title', updatedTitle).should('not.exist')
+
   })
 })
