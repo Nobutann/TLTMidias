@@ -1302,3 +1302,31 @@ body {
         height: auto;
     }
 }
+@media (max-width: 768px) {
+    .logo {
+        position: static;
+        transform: none; 
+        left: auto;
+        margin: 0;      
+    }
+    
+
+    .header-edition {
+        display: none !important;
+    }
+
+
+    .search-input {
+        width: 100px; 
+        padding: 6px 10px;
+    }
+
+    .header-top {
+        gap: 5px;
+        justify-content: space-between; 
+    }
+
+    .logo img {
+        height: 35px;
+    }
+}
