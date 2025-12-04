@@ -1330,3 +1330,235 @@ body {
         height: 35px;
     }
 }
+
+/* Acervo Styles */
+.acervo-wrapper {
+    background-color: var(--background);
+    padding: 40px 0 60px;
+}
+
+.acervo-header {
+    margin-bottom: 40px;
+}
+
+.acervo-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 24px;
+}
+
+.acervo-filters {
+    display: flex;
+    gap: 16px;
+}
+
+.filters-form {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.filter-group {
+    flex: 1;
+}
+
+.filter-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+    background-color: var(--white);
+}
+
+.filter-input:focus {
+    border-color: var(--jc-red);
+    box-shadow: 0 0 0 3px rgba(227, 28, 35, 0.1);
+}
+
+.filter-btn {
+    padding: 12px 16px;
+    background-color: var(--jc-red);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background-color: var(--jc-red-hover);
+}
+
+.filter-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.acervo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.acervo-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: block;
+}
+
+.acervo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.acervo-card-image {
+    position: relative;
+    width: 100%;
+    padding-top: 66.67%;
+    background-color: var(--background);
+    overflow: hidden;
+}
+
+.acervo-card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.acervo-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+}
+
+.acervo-placeholder svg {
+    width: 48px;
+    height: 48px;
+    color: var(--text-light);
+}
+
+.acervo-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: var(--jc-red);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.acervo-card-content {
+    padding: 20px;
+}
+
+.acervo-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.4;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.acervo-card-date {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.acervo-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.acervo-empty {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.acervo-empty-icon {
+    width: 80px;
+    height: 80px;
+    color: var(--text-light);
+    margin: 0 auto 24px;
+}
+
+.acervo-empty-title {
+    font-size: 28px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.acervo-empty-text {
+    font-size: 16px;
+    color: var(--text-medium);
+    margin-bottom: 24px;
+}
+
+.acervo-clear-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--jc-red);
+    color: var(--white);
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.acervo-clear-btn:hover {
+    background-color: var(--jc-red-hover);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .acervo-title {
+        font-size: 28px;
+    }
+    
+    .filters-form {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    
+    .acervo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+    }
+    
+    .acervo-card-title {
+        font-size: 15px;
+    }
+}
