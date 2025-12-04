@@ -119,3 +119,29 @@ def category_page(request, category_slug):
     }
 
     return render(request, 'article/index.html', context)
+
+def acervo(request):
+    article_list = Article.objects.all().order_by('-published_date')
+
+    search_query = request.GET.get('q', '')
+    
+    if search_query:
+        article_list = article_list.filter(title__icontains=search_query)
+    
+    date_filter = request.GET.get('date', '')
+    
+    if date_filter:
+        article_list = article_list.filter(published_date__date=date_filter)
+
+    paginator = Paginator(article_list, 12)
+    page_number = request.GET.get('page', 1)
+    articles = paginator.get_page(page_number)
+
+    context = {
+        'articles': articles,
+        'search_query': search_query,
+        'date_filter': date_filter,
+        'categories': Category.objects.all(),
+    }
+
+    return render(request, 'article/acervo.html', context)

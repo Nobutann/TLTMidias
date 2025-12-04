@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Acervo - JC{% endblock %}
+
+{% block content %}
+<div class="acervo-wrapper">
+    <div class="container">
+        <div class="acervo-header">
+            <h1 class="acervo-title">Acervo</h1>
+            
+            <div class="acervo-filters">
+                <form method="get" class="filters-form">
+                    <div class="filter-group">
+                        <input 
+                            type="text" 
+                            name="q" 
+                            placeholder="Buscar..."
+                            class="filter-input"
+                            value="{{ search_query }}"
+                        >
+                    </div>
+                    
+                    <div class="filter-group">
+                        <input 
+                            type="date" 
+                            name="date" 
+                            class="filter-input"
+                            value="{{ date_filter }}"
+                        >
+                    </div>
+                    
+                    <button type="submit" class="filter-btn" aria-label="Aplicar filtros">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% if articles %}
+        <div class="acervo-grid">
+            {% for article in articles %}
+            <a href="{% url 'article:details' article.slug %}" class="acervo-card">
+                <div class="acervo-card-image">
+                    {% if article.image %}
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                    {% else %}
+                    <div class="acervo-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="acervo-card-badge">{{ article.category.title|upper }}</div>
+                </div>
+                
+                <div class="acervo-card-content">
+                    <h3 class="acervo-card-title">{{ article.title }}</h3>
+                    <div class="acervo-card-date">{{ article.published_date|date:"d/m/Y" }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        {% if articles.has_other_pages %}
+        <div class="acervo-pagination">
+            {% if articles.has_previous %}
+            <a href="?page={{ articles.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}" 
+               class="pagination-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </a>
+            {% else %}
+            <button class="pagination-btn" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </button>
+            {% endif %}
+
+            <span class="pagination-info">
+                Página {{ articles.number }} de {{ articles.paginator.num_pages }}
+            </span>
+
+            {% if articles.has_next %}
+            <a href="?page={{ articles.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}" 
+               class="pagination-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </a>
+            {% else %}
+            <button class="pagination-btn" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </button>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="acervo-empty">
+            <svg class="acervo-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <h2 class="acervo-empty-title">Nenhum artigo encontrado</h2>
+            <p class="acervo-empty-text">Tente ajustar os filtros de busca</p>
+            <a href="{% url 'article:acervo' %}" class="acervo-clear-btn">Limpar filtros</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
