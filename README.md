@@ -18,9 +18,6 @@ Pretendemos alcançar esse objetivo por meio das seguintes funcionalidades:
 **Menu de Categorias Organizadas**  
 Permite que o usuário acesse categorias e subcategorias organizadas por áreas de interesse (Esportes, Política, Economia, Cultura, Tecnologia) ao clicar na aba de menu da página inicial.
 
-**Modos de Acessibilidade (Daltonismo, Escuro, Dislexia)**  
-Disponibiliza configurações de acessibilidade com diferentes modos de visualização como modo escuro, modo dislexia e paletas específicas para tipos de daltonismo.
-
 **Recomendações de Conteúdo e Anúncios Relacionados**  
 Exibe, ao final de cada notícia, recomendações de matérias e anúncios personalizados com base no tema do conteúdo acessado.
 
@@ -39,15 +36,90 @@ Oferece botões para compartilhamento direto das matérias em plataformas como T
 **Destaque de Matérias Relevantes na Página Inicial**  
 Exibe as notícias mais importantes no topo da página inicial, facilitando o acesso do usuário aos conteúdos de maior interesse.
 
-**Download de Notícias em PDF**  
-Permite que o usuário baixe matérias em formato PDF, garantindo a leitura offline mesmo sem conexão com a internet.
-
 **Gerenciamento de Artigos pelos Funcionários**  
 Permite que funcionários publiquem, editem e deletem artigos, garantindo que o conteúdo disponível seja sempre atualizado e legível para os leitores.
 
+## Ambiente de Desenvolvimento (Windows - PowerShell)
+
+Siga estes passos para montar o ambiente, executar a aplicação Django e rodar os testes E2E com Cypress.
+
+Pré-requisitos
+- Python 3.11+ instalado e disponível no PATH
+- Node.js (v16+) e `npm` instalados
+- Git (para clonar o repositório quando necessário)
+
+1) Criar e ativar um virtualenv (PowerShell)
+
+```powershell
+cd C:\caminho\para\TLTMidias
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+2) Instalar dependências Python
+
+```powershell
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+3) Aplicar migrações e preparar o banco (SQLite por padrão)
+
+```powershell
+python manage.py migrate --noinput
+# opcional: criar superusuário
+python manage.py createsuperuser
+```
+
+4) Instalar dependências Node (Cypress)
+
+```powershell
+npm ci
+# se não usar ci (sem package-lock), use:
+# npm install
+```
+
+5) Rodar o servidor de desenvolvimento
+
+```powershell
+python manage.py runserver 8000
+# aplicação estará disponível em http://127.0.0.1:8000
+```
+
+6) Rodar testes Cypress (headless)
+
+Abra outro terminal (ainda com o virtualenv ativo) e execute um dos comandos abaixo.
+
+Rodar toda a suíte (usa `baseUrl` configurado):
+```powershell
+npx cypress run --headless --config baseUrl=http://127.0.0.1:8000
+```
+
+Rodar um spec específico (ex.: `acessar_artigo.cy.js`):
+```powershell
+npx cypress run --headless --spec cypress/e2e/acessar_artigo.cy.js --config baseUrl=http://127.0.0.1:8000
+```
+
+Orquestrar servidor + testes em um único comando (start-server-and-test):
+```powershell
+npx start-server-and-test "python manage.py runserver 8000" http://127.0.0.1:8000 "npx cypress run --headless --config baseUrl=http://127.0.0.1:8000"
+```
+
+7) Execução interativa do Cypress (UI)
+
+```powershell
+npx cypress open --config baseUrl=http://127.0.0.1:8000
+```
+
+Executar testes Django (unitários)
+
+```powershell
+python manage.py test
+```
 
 ## Entregas
 
 [Histórias do usuário](https://docs.google.com/document/d/1B55Cy02mlvmEyRBUyu2h5Y5slspZt34zP3P5U8Sm4WE/edit?usp=sharing)
 
 [Testes automatizados](https://youtu.be/UTVZEfI3OXU)
+
