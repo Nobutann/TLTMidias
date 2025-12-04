@@ -1265,3 +1265,40 @@ body {
         gap: 20px;
     }
 }
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px; 
+    }
+
+  
+    .article-detail-layout {
+        display: block; 
+    }
+
+    .article-main-column {
+        width: 100%; 
+        box-shadow: none; 
+    }
+
+    .article-header, 
+    .article-body-content,
+    .comments-wrapper {
+        padding: 20px 15px; 
+    }
+
+    .article-main-title {
+        font-size: 26px; 
+        line-height: 1.2;
+    }
+
+    .article-body-content {
+        font-size: 16px;
+    }
+    
+    .article-featured-image img,
+    .article-body-content img {
+        max-width: 100%;
+        height: auto;
+    }
+}
