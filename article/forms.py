@@ -4,4 +4,5 @@ from .models import Article
 class ArticleForms(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'content', 'image', 'author']
+        fields = '__all__'
+        exclude = ['published_date']

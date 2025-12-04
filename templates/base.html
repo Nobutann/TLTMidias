@@ -1,128 +1,134 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Jornal do Commercio{% endblock %}</title>
-    
+    <title>{% block title %}JC - Jornal do Commercio{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'article/css/style.css' %}">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    <link rel="stylesheet" href="{% static 'article/css/dark.css' %}">
-    
-    <link rel="icon" type="image/x-icon" href="{% static 'article/img/jc-logo.ico' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header class="header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-top-content">
-                    <div class="header-info">
-                        <span class="date">{{ "now"|date:"l, d F Y" }}</span>
-                        <span class="separator">|</span>
-                        <span class="temp">Recife, PE</span>
-                    </div>
-                    <div class="header-social">
-                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="header-main">
-            <div class="container">
-                <div class="header-content">
-                    <div style="width: 100%;"></div> 
-
-                    <h1 class="logo">
-                        <a href="{% url 'article:homepage' %}">
-                            <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio" style="height: 50px; width: auto;">
-                        </a>
-                    </h1>
+        <div class="container">
+            <div class="header-top">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                        <span class="hamburger"></span>
+                    </button>
                     
-                    <div class="header-actions">
-                        <form action="{% url 'article:homepage' %}" class="search-form" method="get">
-                            <input type="text" name="q" placeholder="Buscar..." class="search-input">
-                            <input type="date" name="data" class="search-date-input" value="{{ search_date|default:'' }}" style="width: auto; margin-left:5px; background:transparent; border:none; color:inherit;">
-                            <button type="submit" class="search-btn">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </form>
-
-                        <button id="showNotifications" class="btn-header-action" title="Notificações">
-                            <i class="bi bi-bell-fill"></i> 
-                            <span class="desktop-only">Alertas</span>
-                        </button>
-
-                        <button id="btn-tema" class="btn-header-action" title="Alternar Tema">
-                            <i class="bi bi-moon-stars-fill"></i>
-                            <span class="desktop-only">Tema</span>
-                        </button>
-
-                        <button class="menu-toggle" id="menuToggle" style="background:none; border:none; font-size:1.5rem; color:var(--text-color); cursor:pointer; display:none;">
-                            <i class="bi bi-list"></i>
-                        </button>
+                    <div class="header-edition">
+                        <svg class="icon-newspaper" viewBox="0 0 24 24">
+                            <rect x="4" y="5" width="16" height="3"/>
+                            <rect x="4" y="10" width="10" height="2"/>
+                            <rect x="4" y="14" width="12" height="2"/>
+                        </svg>
+                        <span>Edição do dia</span>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <nav class="main-nav">
-            <div class="container">
-                <ul class="nav-list" id="navList">
-                    <li><a href="{% url 'article:homepage' %}" class="nav-link">Home</a></li>
-                    <li class="nav-item-dropdown" style="position:relative;">
-                        <a href="#" class="nav-link nav-link-dropdown">
-                            Categorias <i class="bi bi-chevron-down nav-chevron"></i>
-                        </a>
+                <div class="logo">
+                    <a href="{% url 'article:homepage' %}">
+                        <img src="{% static 'article/img/jc-logo.png' %}" alt="Jornal do Commercio">
+                    </a>
+                </div>
+
+                <div class="header-right">
+                    <button class="more-options" aria-label="Mais opções">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                    <form class="search-form" method="get" action="{% url 'article:homepage' %}">
+                        <input 
+                            type="text" 
+                            name="q" 
+                            placeholder="buscar..." 
+                            class="search-input"
+                            value="{{ search_query|default:'' }}"
+                        >
+                        <button type="submit" class="search-button" aria-label="Buscar">
+                            <svg class="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link">Categorias</a>
                         <ul class="dropdown-menu">
                             {% for category in categories %}
-                                <li><a href="{% url 'article:category_page' category_slug=category.slug %}" class="dropdown-link">{{ category.title }}</a></li>
+                            <li>
+                                <a href="?categoria={{ category.slug }}" class="dropdown-link">
+                                    {{ category.title }}
+                                </a>
+                            </li>
                             {% endfor %}
                         </ul>
                     </li>
-                    <li><a href="#" class="nav-link">Acervo</a></li>
-                    <li><a href="#" class="nav-link">Colunistas</a></li>
+                    <li class="nav-item"><a href="{% url 'administration:columnists_page' %}" class="nav-link">Colunistas</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Acervo</a></li>
                 </ul>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </header>
 
-    <div id="notificationList" style="display:none; position:fixed; top:80px; right:5%; width:300px; z-index:9999; box-shadow:0 4px 10px rgba(0,0,0,0.3); border-radius: 8px; padding: 15px;">
-        <p style="margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px;"><strong>Notificações</strong></p>
-        <ul id="notifItems" style="list-style:none; padding:0;"></ul>
-    </div>
+    <aside class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <h2>Menu</h2>
+            <button class="close-menu" id="closeMenu" aria-label="Fechar menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <nav class="mobile-nav">
+            <h3>Categorias</h3>
+            <ul class="mobile-category-list">
+                {% for category in categories %}
+                <li>
+                    <a href="?categoria={{ category.slug }}" 
+                       class="category-link {% if category_slug == category.slug %}active{% endif %}">
+                        {{ category.title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            
+            <h3 style="margin-top: 24px;">Menu</h3>
+            <ul class="mobile-category-list">
+                <li>
+                    <a href="{% url 'administration:columnists_page' %}" class="category-link">
+                        Colunistas
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="category-link">
+                        Acervo
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
-    <main>
+    <main class="main-content">
         {% block content %}{% endblock %}
     </main>
 
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section footer-about">
-                    <img src="{% static 'article/img/jc-logo.png' %}" alt="JC" class="footer-logo" style="height:60px;">
-                    <p>Seu portal de notícias confiável, trazendo informação de qualidade 24 horas por dia.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Categorias</h3>
-                    <ul class="footer-list">
-                        {% for category in categories|slice:":5" %}
-                            <li><a href="#">{{category.title}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="footer-bottom">
-                    <p>© 2025 TLTMídias. Todos os direitos reservados.</p>
-                </div>
-            </div>
+            <p>&copy; 2025 TLTMidias. Todos os direitos reservados.</p>
         </div>
     </footer>
 
-    <script src="{% static 'article/js/dark.js' %}"></script>
+    <script src="{% static 'article/js/scripts.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

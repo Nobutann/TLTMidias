@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'comments',
     "whitenoise.runserver_nostatic",
     'notifications',
+    'administration',
 ]
 
 MIDDLEWARE = [
