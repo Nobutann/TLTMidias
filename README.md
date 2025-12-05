@@ -123,3 +123,5 @@ python manage.py test
 
 [Testes automatizados](https://youtu.be/UTVZEfI3OXU)
 
+[Screencast do CI/CD com build e deployment automatizado e integração dos testes automatizados](https://youtu.be/90TVAFrj5HU)
+
