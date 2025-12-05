@@ -8,4 +8,6 @@ urlpatterns = [
     path('article/<slug:slug>/', views.article_details, name='details'),
     path('categoria/<slug:category_slug>/', views.category_page, name='category_page'),
     path('acervo/', views.acervo, name='acervo'),
+    # NOVA ROTA ADICIONADA
+    path('configuracoes/', views.configuracoes, name='configuracoes'),
 ]

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Configurações - JC{% endblock %}
+
+{% block content %}
+    <header class="settings-header">
+        <div class="container">
+            <div class="header-left">
+                <a href="{% url 'article:homepage' %}" class="btn-voltar">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Voltar
+                </a>
+            </div>
+
+            <div class="logo-center">
+                <a href="{% url 'article:homepage' %}">
+                    <img src="{% static 'article/img/jc_novo.png' %}" alt="Jornal do Commercio">
+                </a>
+            </div>
+
+            <div class="header-right">
+                <form class="search-form" method="get" action="{% url 'article:homepage' %}">
+                    <input type="text" name="q" placeholder="buscar..." class="search-input-fixed">
+                    <button type="submit" class="search-button-red">
+                        <svg class="icon-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="settings-title-bar">
+        <div class="container">
+            <h1>Configurações</h1>
+        </div>
+    </div>
+
+    <div class="settings-wrapper">
+        
+        <section class="settings-section">
+            <h2 class="settings-heading">Acessibilidade</h2>
+            
+            <div class="accessibility-grid">
+                <button class="access-btn">
+                    <div class="access-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                    </div>
+                    <span>Leitor de texto</span>
+                </button>
+
+                <button class="access-btn">
+                    <div class="access-icon text-size-icon">
+                        <span>A</span><span>A</span>
+                    </div>
+                    <span>Tamanho do texto</span>
+                </button>
+
+                <button class="access-btn">
+                    <div class="access-icon daltonism-icon">
+                        <span class="circle-red"></span>
+                        <span class="circle-grey"></span>
+                    </div>
+                    <span>Daltonismo</span>
+                </button>
+
+                <button class="access-btn">
+                    <div class="access-icon contrast-icon">
+                        <div class="contrast-box"></div>
+                    </div>
+                    <span>Ajuste de contraste</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <h2 class="settings-heading">Modo escuro/claro</h2>
+            
+            <button class="theme-toggle-btn" id="themeToggleBtn">
+                <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    </svg>
+                <span id="themeText">claro</span>
+            </button>
+        </section>
+
+    </div>
+
+
+{% endblock %}

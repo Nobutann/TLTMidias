@@ -8,7 +8,6 @@ from .forms import ArticleForms
 from comments.forms import CommentsForm, ResponsesForm
 from comments.models import Comments
 
-
 def homepage(request):
     categories = Category.objects.all()
     
@@ -145,3 +144,12 @@ def acervo(request):
     }
 
     return render(request, 'article/acervo.html', context)
+
+# NOVA FUNÇÃO ADICIONADA
+def configuracoes(request):
+    # Precisamos das categorias para o menu do base.html funcionar
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
+    return render(request, 'article/configuracoes.html', context)
