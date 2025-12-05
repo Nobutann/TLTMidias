@@ -1,68 +1,50 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-import dj_database_url
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 load_dotenv(BASE_DIR / '.env')
 
-TARGET_ENV = os.getenv('TARGET_ENV', '').lower()
-IS_PROD = TARGET_ENV.startswith('prod')
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECRET_KEY
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
+TARGET_ENV = os.getenv('TARGET_ENV')
+NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
-# Debug mode
-DEBUG = os.getenv('DEBUG', '1' if not IS_PROD else '0').lower() in ['true', 't', '1']
-
-# Hosts e CSRF
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(' ')
-
-AZURE_INTERNAL_IPS = ['169.254.129.2', '169.254.129.1', '169.254.129.0/24']
-ALLOWED_HOSTS.extend(AZURE_INTERNAL_IPS)
-
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(' ')
-
-# Redirect SSL se configurado
-SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
-if SECURE_SSL_REDIRECT:
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Banco de dados
-if IS_PROD:
-    db_engine = os.getenv('DB_ENGINE', 'django.db.backends.postgresql')
-    db_name = os.getenv('DBNAME')
-    db_user = os.getenv('DBUSER')
-    db_pass = os.getenv('DBPASS')
-    db_host = os.getenv('DBHOST')
-    db_port = os.getenv('DBPORT', '5432')
-
-    if db_name and db_user and db_pass and db_host:
-        DATABASES = {
-            'default': {
-                'ENGINE': db_engine,
-                'NAME': db_name,
-                'USER': db_user,
-                'PASSWORD': db_pass,
-                'HOST': db_host,
-                'PORT': db_port,
-                'OPTIONS': {'sslmode': 'require'},
-            }
-        }
-    else:
-        # fallback pra SQLite se variáveis faltarem
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
-else:
+if NOT_PROD:
+    # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'umakeyqualquer'
+    ALLOWED_HOSTS = []
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
+    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split(' ')
+
+    SECURE_SSL_REDIRECT = \
+        os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
+
+    if SECURE_SSL_REDIRECT:
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DBNAME'),
+            'HOST': os.environ.get('DBHOST'),
+            'USER': os.environ.get('DBUSER'),
+            'PASSWORD': os.environ.get('DBPASS'),
+            'OPTIONS': {'sslmode': 'require'},
         }
     }
 
@@ -134,7 +116,8 @@ USE_TZ = True
 
 STATIC_URL = os.environ.get('DJANGO_STATIC_URL', "/static/")
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = ('whitenoise.storage.CompressedStaticFilesStorage')
+
+STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
