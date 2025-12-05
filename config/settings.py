@@ -6,7 +6,6 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
-# Detect environment
 TARGET_ENV = os.getenv('TARGET_ENV', '').lower()
 IS_PROD = TARGET_ENV.startswith('prod')
 
@@ -14,10 +13,14 @@ IS_PROD = TARGET_ENV.startswith('prod')
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
 
 # Debug mode
-DEBUG = os.getenv('DEBUG', '1').lower() in ['true', 't', '1']
+DEBUG = os.getenv('DEBUG', '1' if not IS_PROD else '0').lower() in ['true', 't', '1']
 
 # Hosts e CSRF
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(' ')
+
+AZURE_INTERNAL_IPS = ['169.254.129.2', '169.254.129.1', '169.254.129.0/24']
+ALLOWED_HOSTS.extend(AZURE_INTERNAL_IPS)
+
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(' ')
 
 # Redirect SSL se configurado
@@ -94,7 +97,6 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -108,13 +110,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -131,32 +126,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = os.environ.get('DJANGO_STATIC_URL', "/static/")
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 MEDIA_URL = '/media/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
